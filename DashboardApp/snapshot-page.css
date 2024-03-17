@@ -1,0 +1,124 @@
+.additional-info,
+.date-saved {
+  position: absolute;
+  top: calc(50% + 95.5px);
+  left: calc(50% - 243.5px);
+  display: inline-block;
+  width: 155px;
+  height: 55px;
+}
+.additional-info {
+  top: calc(50% + 137.5px);
+  width: 195px;
+}
+.saved-image-child {
+  position: absolute;
+  top: 22px;
+  left: 23px;
+  background-color: var(--color-gainsboro-100);
+  width: 488px;
+  height: 254px;
+}
+.saved-graph {
+  position: absolute;
+  top: calc(50% - 79.5px);
+  left: calc(50% - 147.5px);
+  font-size: var(--font-size-21xl);
+  display: inline-block;
+  width: 296px;
+  height: 55px;
+}
+.saved-image {
+  width: 533px;
+  position: relative;
+  background-color: var(--color-gray-100);
+  height: 401px;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+.frame2,
+.frame3,
+.frame4,
+.frame5 {
+  width: 533px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+}
+.frame3 {
+  height: 843px;
+  flex-shrink: 0;
+  gap: var(--gap-22xl);
+}
+.frame2,
+.frame4,
+.frame5 {
+  position: absolute;
+  top: 29px;
+  height: 1291px;
+}
+.frame2 {
+  left: 193px;
+  gap: 47px;
+}
+.frame4,
+.frame5 {
+  left: 769px;
+  gap: var(--gap-22xl);
+}
+.frame5 {
+  left: 1345px;
+}
+.camera-icon7,
+.logo-icon7,
+.world-icon7 {
+  width: 138px;
+  position: relative;
+  height: 109px;
+  object-fit: cover;
+  cursor: pointer;
+}
+.camera-icon7,
+.world-icon7 {
+  width: 50px;
+  height: 50px;
+}
+.camera-icon7 {
+  height: 44.4px;
+}
+.sidebar-frame7,
+.user-icon-parent5,
+.world-icon-parent5 {
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--gap-73xl);
+}
+.sidebar-frame7,
+.user-icon-parent5 {
+  gap: var(--gap-5xl);
+}
+.sidebar-frame7 {
+  position: absolute;
+  top: 0;
+  left: 0;
+  background-color: var(--color-ivory-100);
+  height: 1349px;
+  justify-content: flex-start;
+  gap: var(--gap-208xl);
+}
+.snapshot-page {
+  width: 100%;
+  position: relative;
+  background-color: var(--color-beige);
+  height: 1349px;
+  overflow: hidden;
+  text-align: center;
+  font-size: var(--font-size-11xl);
+  color: var(--color-black);
+  font-family: var(--font-almarai);
+}

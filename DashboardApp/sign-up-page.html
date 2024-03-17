@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="initial-scale=1, width=device-width" />
+
+    <link rel="stylesheet" href="./global.css" />
+    <link rel="stylesheet" href="./sign-up-page.css" />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Almarai:wght@300;400;700&display=swap"
+    />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400&display=swap"
+    />
+  </head>
+  <body>
+    <div class="sign-up-page">
+      <div class="sidebar-frame6">
+        <img
+          class="logo-icon6"
+          alt=""
+          src="./public/logo@2x.png"
+          id="logoImage"
+        />
+
+        <div class="world-icon-parent4">
+          <img
+            class="world-icon6"
+            alt=""
+            src="./public/world-icon@2x.png"
+            id="worldIcon"
+          />
+
+          <img
+            class="world-icon6"
+            alt=""
+            src="./public/table-icon@2x.png"
+            id="tableIcon"
+          />
+
+          <img
+            class="camera-icon6"
+            alt=""
+            src="./public/camera-icon1@2x.png"
+            id="cameraICon"
+          />
+        </div>
+        <div class="user-icon-parent4">
+          <img
+            class="world-icon6"
+            alt=""
+            src="./public/user-icon@2x.png"
+            id="userIcon"
+          />
+
+          <img
+            class="world-icon6"
+            alt=""
+            src="./public/settings-icon@2x.png"
+            id="settingsIcon"
+          />
+        </div>
+      </div>
+      <div class="rectangle-parent">
+        <div class="rectangle-div"></div>
+        <a class="i-agree-to-container" href="termsandconditions.com"
+          >I agree to the
+          <span class="terms-and-conditions">Terms and Conditions</span> of Use
+        </a>
+        <a class="already-have-an-container" href="./log-in-page.html"
+          >Already have an account? Log in
+          <span class="terms-and-conditions">HERE</span>
+        </a>
+        <div class="sign-up-parent">
+          <b class="sign-up1">Sign Up</b>
+          <div class="inputs1">
+            <div class="full-name">
+              <div class="full-name-parent">
+                <div class="full-name1">Full Name</div>
+                <div class="full-name-wrapper">
+                  <input
+                    class="full-name2"
+                    placeholder="Full Name..."
+                    type="text"
+                  />
+                </div>
+              </div>
+            </div>
+            <div class="full-name">
+              <div class="full-name-parent">
+                <div class="full-name1">Username</div>
+                <div class="full-name-wrapper">
+                  <input
+                    class="full-name2"
+                    placeholder="Username..."
+                    type="text"
+                  />
+                </div>
+              </div>
+            </div>
+            <div class="full-name">
+              <div class="full-name-parent">
+                <div class="repeat-password">Email Address</div>
+                <div class="full-name-wrapper">
+                  <input
+                    class="full-name2"
+                    placeholder="Email Address..."
+                    type="text"
+                  />
+                </div>
+              </div>
+            </div>
+            <div class="full-name">
+              <div class="full-name-parent">
+                <div class="repeat-password">Password</div>
+                <div class="full-name-wrapper">
+                  <input
+                    class="full-name2"
+                    placeholder="Password..."
+                    type="password"
+                  />
+                </div>
+              </div>
+            </div>
+            <div class="repeat-password-parent">
+              <div class="repeat-password">Repeat Password</div>
+              <div class="repeat-password-wrapper">
+                <input
+                  class="repeat-password1"
+                  placeholder="Repeat Password..."
+                  type="password"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+        <input class="rectangle-input" required="{true}" type="checkbox" />
+
+        <button class="sign-up-container">
+          <div class="sign-up2">Sign Up</div>
+        </button>
+      </div>
+    </div>
+
+    <script>
+      var logoImage = document.getElementById("logoImage");
+      if (logoImage) {
+        logoImage.addEventListener("click", function (e) {
+          window.location.href = "./dashboard-page.html";
+        });
+      }
+      
+      var worldIcon = document.getElementById("worldIcon");
+      if (worldIcon) {
+        worldIcon.addEventListener("click", function (e) {
+          // Please sync "Map Explorer Page" to the project
+        });
+      }
+      
+      var tableIcon = document.getElementById("tableIcon");
+      if (tableIcon) {
+        tableIcon.addEventListener("click", function (e) {
+          window.location.href = "./analytics-page.html";
+        });
+      }
+      
+      var cameraICon = document.getElementById("cameraICon");
+      if (cameraICon) {
+        cameraICon.addEventListener("click", function (e) {
+          window.location.href = "./snapshot-page.html";
+        });
+      }
+      
+      var userIcon = document.getElementById("userIcon");
+      if (userIcon) {
+        userIcon.addEventListener("click", function (e) {
+          window.location.href = "account-page.html";
+        });
+      }
+      
+      var settingsIcon = document.getElementById("settingsIcon");
+      if (settingsIcon) {
+        settingsIcon.addEventListener("click", function (e) {
+          window.location.href = "./settings-page.html";
+        });
+      }
+      </script>
+  </body>
+</html>
