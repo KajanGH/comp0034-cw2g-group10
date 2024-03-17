@@ -1,0 +1,66 @@
+.fake-graph-box,
+.fake-graph4-popup-child {
+  position: absolute;
+  border-radius: var(--br-mini);
+  box-sizing: border-box;
+}
+.fake-graph4-popup-child {
+  top: 0;
+  left: 465px;
+  background: linear-gradient(
+    180deg,
+    #fff,
+    #000 97.92%,
+    rgba(217, 217, 217, 0)
+  );
+  box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
+  border: 5px solid var(--color-black);
+  width: 101px;
+  height: 44px;
+}
+.fake-graph-box {
+  border: 3px solid var(--color-black);
+  background-color: var(--color-gainsboro-100);
+  outline: 0;
+  top: 30px;
+  left: 0;
+  width: 623px;
+  height: 179px;
+}
+.draggable {
+  margin: 0;
+}
+.graph-4-draggable-container {
+  position: absolute;
+  top: 78px;
+  left: 0;
+  display: inline-block;
+  width: 216px;
+  height: 83px;
+}
+.frame13,
+.frame15 {
+  position: absolute;
+  top: 0;
+  left: 204px;
+  width: 216px;
+  height: 161px;
+  overflow: hidden;
+}
+.frame13 {
+  left: 0;
+  width: 623px;
+  height: 209px;
+}
+.fake-graph4-popup {
+  width: 623px;
+  position: relative;
+  height: 209px;
+  max-width: 90%;
+  max-height: 90%;
+  overflow: auto;
+  text-align: center;
+  font-size: var(--font-size-13xl);
+  color: var(--color-black);
+  font-family: var(--font-almarai);
+}

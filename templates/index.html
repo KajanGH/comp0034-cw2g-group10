@@ -4,8 +4,8 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="initial-scale=1, width=device-width" />
 
-    <link rel="stylesheet" href="./global.css" />
-    <link rel="stylesheet" href="./index.css" />
+    <link rel="stylesheet" href="/static/global.css" />
+    <link rel="stylesheet" href="/static/index.css" />
     <link
       rel="stylesheet"
       href="https://fonts.googleapis.com/css2?family=Almarai:wght@300;400;700&display=swap"
@@ -18,7 +18,7 @@
   <body>
     <div class="homepage">
       <header class="frame-parent">
-        <img class="frame-child" alt="" src="./public/frame-12@2x.png" />
+        <img class="frame-child" alt="" src="/static/public/frame-12@2x.png" />
 
         <div class="instance-parent">
           <button class="log-in-wrapper" id="frameButton">
@@ -79,7 +79,7 @@
               </div>
             </div>
           </div>
-          <img class="frame-inner" alt="" src="./public/frame-22@2x.png" />
+          <img class="frame-inner" alt="" src="/static/public/frame-22@2x.png" />
         </section>
         <section class="examples-of-use-parent">
           <h1 class="examples-of-use">Examples of Use</h1>
@@ -130,7 +130,7 @@
               </p>
             </div>
           </div>
-          <img class="frame-icon" alt="" src="./public/frame-25@2x.png" />
+          <img class="frame-icon" alt="" src="/static/public/frame-25@2x.png" />
         </section>
         <section class="frequently-asked-questions-parent">
           <h1 class="examples-of-use">Frequently Asked Questions</h1>
@@ -167,15 +167,15 @@
         <b class="copyright-2023">Copyright © 2023 Urban Intelligence </b>
         <div class="bottom-line">
           <div class="logos">
-            <img class="x-logo-icon" alt="" src="./public/x-logo@2x.png" />
+            <img class="x-logo-icon" alt="" src="/static/public/x-logo@2x.png" />
 
             <img
               class="x-logo-icon"
               alt=""
-              src="./public/instagram-logo@2x.png"
+              src="/static/public/instagram-logo@2x.png"
             />
 
-            <img class="meta-logo-icon" alt="" src="./public/meta-logo.svg" />
+            <img class="meta-logo-icon" alt="" src="/static/public/meta-logo.svg" />
           </div>
         </div>
       </footer>
@@ -185,14 +185,14 @@
       var frameButton = document.getElementById("frameButton");
       if (frameButton) {
         frameButton.addEventListener("click", function (e) {
-          window.location.href = "./log-in-page.html";
+          window.location.href = "/log-in";
         });
       }
       
       var frameButton1 = document.getElementById("frameButton1");
       if (frameButton1) {
         frameButton1.addEventListener("click", function (e) {
-          window.location.href = "./sign-up-page.html";
+          window.location.href = "/sign-up";
         });
       }
       </script>
