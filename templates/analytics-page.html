@@ -4,8 +4,8 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="initial-scale=1, width=device-width" />
 
-    <link rel="stylesheet" href="./global.css" />
-    <link rel="stylesheet" href="./analytics-page.css" />
+    <link rel="stylesheet" href="/static/global.css" />
+    <link rel="stylesheet" href="/static/analytics-page.css" />
     <link
       rel="stylesheet"
       href="https://fonts.googleapis.com/css2?family=Almarai:wght@300;400;700&display=swap"
@@ -21,7 +21,7 @@
         <img
           class="logo-icon9"
           alt=""
-          src="./public/logo@2x.png"
+          src="/static/public/logo@2x.png"
           id="logoImage"
         />
 
@@ -29,21 +29,21 @@
           <img
             class="world-icon9"
             alt=""
-            src="./public/world-icon@2x.png"
+            src="/static/public/world-icon@2x.png"
             id="worldIcon"
           />
 
           <img
             class="world-icon9"
             alt=""
-            src="./public/table-icon@2x.png"
+            src="/static/public/table-icon@2x.png"
             id="tableIcon"
           />
 
           <img
             class="camera-icon9"
             alt=""
-            src="./public/camera-icon@2x.png"
+            src="/static/public/camera-icon@2x.png"
             id="cameraICon"
           />
         </div>
@@ -51,14 +51,14 @@
           <img
             class="world-icon9"
             alt=""
-            src="./public/user-icon@2x.png"
+            src="/static/public/user-icon@2x.png"
             id="userIcon"
           />
 
           <img
             class="world-icon9"
             alt=""
-            src="./public/settings-icon@2x.png"
+            src="/static/public/settings-icon@2x.png"
             id="settingsIcon"
           />
         </div>
@@ -133,7 +133,7 @@
                       <img
                         class="chevron-icon2"
                         alt=""
-                        src="./public/chevron1@2x.png"
+                        src="/static/public/chevron1@2x.png"
                       />
                     </div>
                   </div>
@@ -174,7 +174,7 @@
       var logoImage = document.getElementById("logoImage");
       if (logoImage) {
         logoImage.addEventListener("click", function (e) {
-          window.location.href = "./dashboard-page.html";
+          window.location.href = "/dashboard";
         });
       }
       
@@ -188,28 +188,28 @@
       var tableIcon = document.getElementById("tableIcon");
       if (tableIcon) {
         tableIcon.addEventListener("click", function (e) {
-          window.location.href = "./analytics-page.html";
+          window.location.href = "/analytics";
         });
       }
       
       var cameraICon = document.getElementById("cameraICon");
       if (cameraICon) {
         cameraICon.addEventListener("click", function (e) {
-          window.location.href = "./snapshot-page.html";
+          window.location.href = "/snapshot";
         });
       }
       
       var userIcon = document.getElementById("userIcon");
       if (userIcon) {
         userIcon.addEventListener("click", function (e) {
-          window.location.href = "account-page.html";
+          window.location.href = "account";
         });
       }
       
       var settingsIcon = document.getElementById("settingsIcon");
       if (settingsIcon) {
         settingsIcon.addEventListener("click", function (e) {
-          window.location.href = "./settings-page.html";
+          window.location.href = "/settings";
         });
       }
       </script>

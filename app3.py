@@ -3,10 +3,10 @@ import pandas as pd  # Import pandas for DataFrame manipulation
 
 # Load data from URL
 UK_ACCIDENTS_DATA = 'https://raw.githubusercontent.com/visgl/deck.gl-data/master/examples/3d-heatmap/heatmap-data.csv'
-POP_DATA_URL = 'https://raw.githubusercontent.com/KajanGH/data/main/ctry.json'
+POP_DATA_URL = 'https://raw.githubusercontent.com/KajanGH/data/main/prepared_ctry.csv'
 
 # Load population data into a DataFrame
-pop_data = pd.read_json(POP_DATA_URL)
+#pop_data = pd.read_json(POP_DATA_URL)
 
 # Define the layer
 layer = pdk.Layer(
@@ -35,4 +35,4 @@ view_state = pdk.ViewState(
 
 # Combine all elements and render a viewport
 r = pdk.Deck(layers=[layer], initial_view_state=view_state)
-r.to_html('test2.html')
+r.to_html('test3.html')
