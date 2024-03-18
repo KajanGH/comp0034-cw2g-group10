@@ -59,15 +59,13 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 314px 124px;
 }
 .table-container {
-  padding: 312px 184px;
+  padding:20px 0px;
 }
 .frame-parent15,
 .graph-wrapper {
   align-self: stretch;
-  display: flex;
   flex-direction: row;
 }
 .frame-parent15 {
@@ -96,10 +94,7 @@
   gap: var(--gap-21xl);
 }
 .frame-child6 {
-  position: absolute;
-  top: 0;
-  left: 0;
-  background-color: var(--color-gray-100);
+  position:absolute;
   width: 623px;
   height: 202px;
 }
@@ -384,4 +379,14 @@
   font-size: var(--font-size-21xl);
   color: var(--color-black);
   font-family: var(--font-almarai);
+}
+.img{
+  width: 80%;
+  height: auto;
+}
+.img2{
+  width: 30%;
+  height: auto;
+  background-color: var(--color-gray-100);
+  padding: 8px;
 }
