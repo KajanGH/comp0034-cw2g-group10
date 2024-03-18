@@ -1,4 +1,4 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, request
 
 app = Flask(__name__)
 
@@ -12,6 +12,7 @@ def account():
 
 @app.route('/analytics')
 def analytics():
+    request.args.get('location')
     return render_template('analytics-page.html')
 
 @app.route('/dashboard')

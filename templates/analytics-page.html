@@ -14,6 +14,7 @@
       rel="stylesheet"
       href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400&display=swap"
     />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
   </head>
   <body>
     <div class="analytics-page">
@@ -88,39 +89,34 @@
               <div class="filters-wrapper">
                 <b class="filters1">Filters</b>
               </div>
+              <form id="searchForm" action="/analytics" method="GET">
               <div class="location-parent">
                 <div class="table">Location:</div>
-                <input
-                  class="frame-child7"
-                  placeholder="Enter Location..."
-                  type="text"
-                />
+                  <input class = "frame-child7" type="text" name="location" id="location" placeholder="Enter Location...">
               </div>
               <div class="frame-parent19">
                 <div class="age-wrapper">
                   <div class="age2">Age:</div>
                 </div>
                 <div class="lower-value-wrapper">
-                  <input class="lower-value2" type="number" />
+                  <input class="lower-value2" type="number" name="low-age" id="low-age"/>
                 </div>
                 <div class="to-wrapper">
                   <div class="table">to</div>
                 </div>
                 <div class="lower-value-wrapper">
-                  <input class="lower-value2" type="number" />
+                  <input class="lower-value2" type="number" name="high-age" id="high-age"/>
                 </div>
               </div>
               <div class="year-parent">
                 <div class="year">Year:</div>
-                <input class="lower-value4" type="number" />
+                <input class="lower-value4" type="number" name="year" id="year"/>
               </div>
               <div class="location-parent">
                 <div class="table">Month:</div>
-                <input
-                  class="month-child"
-                  placeholder="Enter month..."
-                  type="text"
-                />
+                  <input class = "month-child" type="text" name="month" id="month" placeholder="Enter Month...">
+              <button type="submit">Search</button>
+              </form>
               </div>
               <div class="location-parent">
                 <div class="year">Sex:</div>
@@ -171,6 +167,7 @@
     </div>
 
     <script>
+      
       var logoImage = document.getElementById("logoImage");
       if (logoImage) {
         logoImage.addEventListener("click", function (e) {
@@ -212,6 +209,12 @@
           window.location.href = "/settings";
         });
       }
+      $('form#searchForm').submit(function() {
+            $(':input', this).each(function() {
+                this.disabled = !($(this).val());
+            });
+        });
+        
       </script>
   </body>
 </html>
