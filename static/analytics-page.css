@@ -148,6 +148,7 @@
   align-items: flex-start;
   justify-content: flex-start;
   gap: var(--gap-7xs);
+  margin-bottom: 8px
 }
 .age2 {
   position: absolute;
@@ -184,6 +185,7 @@
   flex-direction: row;
   align-items: center;
   justify-content: center;
+  margin-bottom: 8px
 }
 .frame-parent19 {
   align-self: stretch;
@@ -210,6 +212,7 @@
 .year-parent {
   display: flex;
   flex-direction: row;
+  margin-bottom: 8px
 }
 .year-parent {
   align-items: flex-start;
