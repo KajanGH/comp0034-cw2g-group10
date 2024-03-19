@@ -87,22 +87,28 @@ def analytics():
                         ha='center', va='bottom')
         plt.savefig('static/public/graph2.png')
         ###SEX PIE CHART###
-        sex_counts = df['sex'].value_counts()
+        sex_age_counts = df.groupby('sex')[age_columns].sum()
+
+        # Calculate the total number of people per sex
+        total_people_per_sex = sex_age_counts.sum(axis=1)
 
         # Plotting
         plt.figure(figsize=(8, 8))
-        plt.pie(sex_counts, labels=sex_counts.index, autopct='%1.1f%%', startangle=140,textprops={'fontsize': 30})
-        plt.title('Sex Ratio',fontsize=60)
+        plt.pie(total_people_per_sex, labels=total_people_per_sex.index, autopct='%1.1f%%', startangle=140, textprops={'fontsize': 30})
+        plt.title('Sex Makeup', fontsize=60)
         plt.axis('equal')
         plt.tight_layout()
         plt.savefig('static/public/graph3.png')
 
         ###LOCATION PIE CHART###
-        location_counts = df['ITL'].value_counts()
+        location_age_counts = df.groupby('ITL')[age_columns].sum()
+
+        # Calculate the total number of people per sex
+        total_people_per_location = location_age_counts.sum(axis=1)
 
         # Plotting
         plt.figure(figsize=(8, 8))
-        plt.pie(location_counts, labels=location_counts.index, autopct='%1.1f%%', startangle=140,textprops={'fontsize': 30})
+        plt.pie(total_people_per_location, labels=total_people_per_location.index, autopct='%1.1f%%', startangle=140, textprops={'fontsize': 30})
         plt.title('ITL Ratio',fontsize=60)
         plt.axis('equal')
         plt.tight_layout()
