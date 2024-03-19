@@ -1,6 +1,9 @@
 from flask import Flask, render_template, request, redirect, url_for, send_file
+from string import capwords
+from collections import deque
 import pandas as pd
 import matplotlib.pyplot as plt
+import calendar
 
 app = Flask(__name__)
 
@@ -12,29 +15,36 @@ def index():
 def account():
     return render_template('account-page.html')
 
+search = deque(["","",""],maxlen=3)
 @app.route('/analytics', methods=['GET', 'POST'])
 def analytics():
+    form = ""
     if request.method == 'POST':
-        df = pd.read_csv('dataset/prepared_ctry.csv',  usecols=lambda col: 'age' in col or col in ['Country', 'extract_date', 'sex'])
-        age_sum = 0
+        df = pd.read_csv('dataset/prepared_itl.csv',  usecols=lambda col: 'age' in col or col in ['Region','ITL', 'extract_date', 'sex'])
         for index,row in df.iterrows():
             df.at[index, 'year'] = int(row['extract_date'].split('-')[0])
-            df.at[index, 'month'] = int(row['extract_date'].split('-')[1])
-        if 'sex' in request.form.keys(): df = df[df['sex'] == request.form['sex']]
-        if 'Country' in request.form.keys(): df = df[df['Country'] == request.form['Country']]
-        if 'year' in request.form.keys(): df = df[df['extract_date'].str.contains(request.form['year'],na=False)]
-        if 'month' in request.form.keys(): df = df[df['extract_date'].str.contains(request.form['month'],na=False)]
-        if 'high-age' in request.form.keys(): high_age = int(request.form['high-age'])
-        else: high_age = 95
-        if 'low-age' in request.form.keys(): low_age = int(request.form['low-age'])
+            df.at[index, 'month'] = calendar.month_name[int(row['extract_date'].split('-')[1])]
+        if 'Region' in request.form.keys():
+            df = df[df['Region'] == capwords(request.form['Region'])]
+            form += request.form['Region']
+        if 'sex' in request.form.keys():
+            df = df[df['sex'] == request.form['sex'].lower()]
+            form += " " + request.form['sex']
+        if 'low-age' in request.form.keys() and int(request.form['low-age'])>0: low_age = int(request.form['low-age'])
         else: low_age = 0
-        for i in range(high_age-low_age+1):
-            age_sum += df[f'age_{i+low_age}']
-        df['age'] = age_sum
-        age_cols_to_keep = [f'age_{i}' for i in range(low_age, high_age + 1)]
-        df = df[['Country', 'sex', 'year', 'month'] + age_cols_to_keep]
-        #df.to_excel(f'newdataset/{request.form}_prepared_ctry.xlsx', index=False)
+        if 'high-age' in request.form.keys() and int(request.form['high-age'])<95: high_age = int(request.form['high-age'])
+        else: high_age = 95
+        form += " " + str(low_age) + "-" + str(high_age)
+        if 'month' in request.form.keys():
+            df = df[df['month'] == request.form['month'].capitalize()]
+            form += " in " + request.form['month']
+        if 'year' in request.form.keys():
+            df = df[df['extract_date'].str.contains(request.form['year'])]
+            form += " " + request.form['year']
+        df.to_excel('static/public/filtered_data.xlsx')
 
+        age_cols_to_keep = [f'age_{i}' for i in range(low_age, high_age + 1)]
+        df = df[['Region','ITL', 'sex', 'year', 'month'] + age_cols_to_keep]
         ####AGE AGAINST YEARS GRAPH####
         # Calculate sum of each age range row
         age_columns = [col for col in df.columns if col.startswith('age_')]
@@ -88,28 +98,28 @@ def analytics():
         plt.savefig('static/public/graph3.png')
 
         ###LOCATION PIE CHART###
-        location_counts = df['Country'].value_counts()
+        location_counts = df['ITL'].value_counts()
 
         # Plotting
         plt.figure(figsize=(8, 8))
         plt.pie(location_counts, labels=location_counts.index, autopct='%1.1f%%', startangle=140,textprops={'fontsize': 30})
-        plt.title('Location Ratio',fontsize=60)
+        plt.title('ITL Ratio',fontsize=60)
         plt.axis('equal')
         plt.tight_layout()
         plt.savefig('static/public/graph4.png')
 
         ###MONTH PIE CHART###
         month_counts = df['month'].value_counts()
-        months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
         # Plotting
         plt.figure(figsize=(8, 8))
-        plt.pie(month_counts, labels=months, autopct='%1.1f%%', startangle=140,textprops={'fontsize': 25})
+        plt.pie(month_counts, labels=month_counts.index, autopct='%1.1f%%', startangle=140,textprops={'fontsize': 25})
         plt.title('Month Ratio',fontsize=60)
         plt.axis('equal')
         plt.tight_layout()
         plt.savefig('static/public/graph5.png')
 
-        return redirect(url_for('analytics'))
+        search.append(form)
+        return render_template('analytics-page.html',DataToRender = search )
     # Render analytics page template
     return render_template('analytics-page.html')
 
