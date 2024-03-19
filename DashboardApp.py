@@ -127,7 +127,7 @@ def analytics():
         search.append(form)
         return render_template('analytics-page.html',DataToRender = search )
     # Render analytics page template
-    return render_template('analytics-page.html')
+    return render_template('analytics-page.html',DataToRender=search)
 
 @app.route('/dashboard')
 def dashboard():
