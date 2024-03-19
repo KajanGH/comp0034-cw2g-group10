@@ -1,9 +1,9 @@
-from flask import Flask, render_template, request, redirect, url_for, send_file
-from string import capwords
-from collections import deque
 import pandas as pd
 import matplotlib.pyplot as plt
 import calendar
+from flask import Flask, render_template, request
+from string import capwords
+from collections import deque
 
 app = Flask(__name__)
 
@@ -25,7 +25,7 @@ def analytics():
             df.at[index, 'year'] = int(row['extract_date'].split('-')[0])
             df.at[index, 'month'] = calendar.month_name[int(row['extract_date'].split('-')[1])]
         if 'Region' in request.form.keys():
-            df = df[df['Region'] == capwords(request.form['Region'])]
+            df = df[df['Region'] == (request.form['Region'])]
             form += request.form['Region']
         if 'sex' in request.form.keys():
             df = df[df['sex'] == request.form['sex'].lower()]
@@ -127,7 +127,7 @@ def analytics():
         search.append(form)
         return render_template('analytics-page.html',DataToRender = search )
     # Render analytics page template
-    return render_template('analytics-page.html')
+    return render_template('analytics-page.html',DataToRender = search )
 
 @app.route('/dashboard')
 def dashboard():
