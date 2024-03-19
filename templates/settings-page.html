@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="initial-scale=1, width=device-width" />
+
+    <link rel="stylesheet" href="/static/global.css" />
+    <link rel="stylesheet" href="/static/settings-page.css" />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Almarai:wght@300;400;700&display=swap"
+    />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400&display=swap"
+    />
+  </head>
+  <body>
+    <div class="settings-page">
+      <div class="frame-parent21">
+        <div class="sidebar-frame-wrapper">
+          <div class="sidebar-frame10">
+            <img
+              class="logo-icon10"
+              alt=""
+              src="/static/public/logo@2x.png"
+              id="logoImage"
+            />
+
+            <div class="world-icon-parent8">
+              <img
+                class="world-icon10"
+                alt=""
+                src="/static/public/world-icon@2x.png"
+                id="worldIcon"
+              />
+
+              <img
+                class="world-icon10"
+                alt=""
+                src="/static/public/table-icon@2x.png"
+                id="tableIcon"
+              />
+
+              <img
+                class="camera-icon10"
+                alt=""
+                src="/static/public/camera-icon@2x.png"
+                id="cameraICon"
+              />
+            </div>
+            <div class="user-icon-parent8">
+              <img
+                class="world-icon10"
+                alt=""
+                src="/static/public/user-icon@2x.png"
+                id="userIcon"
+              />
+
+              <img
+                class="world-icon10"
+                alt=""
+                src="/static/public/settings-icon@2x.png"
+                id="settingsIcon"
+              />
+            </div>
+          </div>
+        </div>
+        <div class="frame25">
+          <div class="frame-parent22">
+            <div class="frame26">
+              <b class="settings">Settings</b>
+            </div>
+            <div class="frame27">
+              <div class="heat-map3d-bars">
+                <div class="settings">Light Mode</div>
+                <button class="toggle-switch-parent">
+                  <div class="toggle-switch"></div>
+                  <div class="frame-child8"></div>
+                </button>
+                <div class="settings">Dark Mode</div>
+              </div>
+            </div>
+            <button class="reset-password-container">
+              <div class="reset-password1">Clear my data</div>
+            </button>
+            <button class="reset-password-container">
+              <div class="reset-password1">API</div>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      var logoImage = document.getElementById("logoImage");
+      if (logoImage) {
+        logoImage.addEventListener("click", function (e) {
+          window.location.href = "/dashboard";
+        });
+      }
+      
+      var worldIcon = document.getElementById("worldIcon");
+      if (worldIcon) {
+        worldIcon.addEventListener("click", function (e) {
+          // Please sync "Map Explorer Page" to the project
+        });
+      }
+      
+      var tableIcon = document.getElementById("tableIcon");
+      if (tableIcon) {
+        tableIcon.addEventListener("click", function (e) {
+          window.location.href = "/analytics";
+        });
+      }
+      
+      var cameraICon = document.getElementById("cameraICon");
+      if (cameraICon) {
+        cameraICon.addEventListener("click", function (e) {
+          window.location.href = "/snapshot";
+        });
+      }
+      
+      var userIcon = document.getElementById("userIcon");
+      if (userIcon) {
+        userIcon.addEventListener("click", function (e) {
+          window.location.href = "account";
+        });
+      }
+      
+      var settingsIcon = document.getElementById("settingsIcon");
+      if (settingsIcon) {
+        settingsIcon.addEventListener("click", function (e) {
+          window.location.href = "/settings";
+        });
+      }
+      </script>
+  </body>
+</html>
