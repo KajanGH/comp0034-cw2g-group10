@@ -5,13 +5,21 @@ import secrets
 from flask import Flask, render_template, request, session
 from collections import deque
 from helpers import encode_auth_token, token_required
+from pathlib import Path
 
 app = Flask(__name__)
 app.secret_key = secrets.token_hex(16)
 
-# Load data
-lad_url = 'https://media.githubusercontent.com/media/KajanGH/data/main/prepared_lad.csv'
-lad_csv = pd.read_csv(lad_url)
+
+#PUT LOCATION SELECTION HERE--------------
+    # Load data
+ctry_data = pd.read_csv('dataset/prepared_ctry.csv')
+rgn_data = pd.read_csv('dataset/prepared_rgn.csv')
+itl_data = pd.read_csv('dataset/prepared_itl.csv')
+lad_data = pd.read_csv('dataset/prepared_lad.csv')
+
+
+#-----------------------------------------
 
 
 @app.route('/')
@@ -182,15 +190,41 @@ def signup():
 def snapshot():
     return render_template('snapshot-page.html')
 
-@app.route('/map')
+@app.route('/map', methods=['GET', 'POST'])
 def map():
     # Perform data analysis and calculations
     start_age = 0
     end_age = 95
 
+    if request.method == 'POST':
+        selected_layer = request.form.get('layer') 
+        sexChoice = request.form.get('sex')
+        start_age = int(request.form.get('start_age'))
+        end_age = int(request.form.get('end_age'))
+    else:
+        selected_layer = 'rgn'
+        sexChoice = 'persons'
+        start_age = 0
+        end_age = 95
+
+
+    # Update data based on the selected layer
+    if selected_layer == 'lad':
+        data = lad_data
+    elif selected_layer == 'itl':
+        data = itl_data
+    elif selected_layer == 'rgn':
+        data = rgn_data
+    else:
+        # Handle invalid selection
+        data = rgn_data
+
+    
+
 
 
     def calculate_elevation_in_range(row):
+        
         return sum(row[f'age_{i}'] if f'age_{i}' in row else 0 for i in range(start_age, end_age + 1))
     
     def interpolate_colour_r(elevation):
@@ -208,7 +242,7 @@ def map():
             # Interpolate between green and yellow
             color = [int((1 - 2 * normalized_elevation) * green[i] + 2 * normalized_elevation * yellow[i]) for i in range(3)]
         else:
-            # Interpolate between yellow and red
+            # Interpolate between orange and red
             color = [int((1 - 2 * (normalized_elevation - 0.5)) * orange[i] + 2 * (normalized_elevation - 0.5) * red[i]) for i in range(3)]
         
         return color[0] 
@@ -228,26 +262,39 @@ def map():
             # Interpolate between green and yellow
             color = [int((1 - 2 * normalized_elevation) * green[i] + 2 * normalized_elevation * yellow[i]) for i in range(3)]
         else:
-            # Interpolate between yellow and red
+            # Interpolate between orange and red
             color = [int((1 - 2 * (normalized_elevation - 0.5)) * orange[i] + 2 * (normalized_elevation - 0.5) * red[i]) for i in range(3)]
         
         return color[1]
     
+    #Filters
+    #filter = 1 means on, filter = 0 means off THIS IS SPECIFIC TO LOCATION FILTERS NOT SEX, AGE OR DATE
+    filter = 0
+    
 
-    fdata = lad_csv[lad_csv['sex'] == 'female']
-    #fdata = fdata[fdata['Region'] == 'London']
-    fdata = fdata[fdata['ITL'] == fdata['ITL']]
+    fdata = data[data['sex'] == sexChoice]
     fdata = fdata[fdata['extract_date'] == '2014-10-01']
-    #fdata = fdata[fdata['LAD'] != 'City of London']
+    if [selected_layer == 'lad' or selected_layer == 'itl'] and filter == 1:
+        fdata = fdata[fdata['Region'] == 'London']
+        if selected_layer == 'lad':
+            fdata = fdata[fdata['ITL'] == fdata['ITL']]
+    #        fdata = fdata[fdata['LAD'] != ' ']
+    #if selected_layer == 'itl':
+    #    fdata = fdata[fdata['ITL'] != ' ']
+    #if selected_layer == 'rgn':
+    #    fdata = fdata[fdata['RGN'] != ' ']
+
     fdata['elevation'] = fdata.apply(calculate_elevation_in_range, axis=1)
+
     max_elevation = fdata['elevation'].max()
     min_elevation = fdata['elevation'].min()
+
     scale = 40000 / max_elevation
     fdata['red'] = fdata['elevation'].apply(interpolate_colour_r)
     fdata['green'] = fdata['elevation'].apply(interpolate_colour_g)
     
     # Pass processed data to template
-    return render_template('map.html', data=fdata.to_dict(orient='records'), start_age=start_age, end_age=end_age, max_elevation=max_elevation, min_elevation=min_elevation, scale=scale)
+    return render_template('map.html', DATA=fdata.to_dict(orient='records'), start_age=start_age, end_age=end_age, max_elevation=max_elevation, min_elevation=min_elevation, scale=scale)
 
 
 
