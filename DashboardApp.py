@@ -261,7 +261,7 @@ def map():
     #Filters
     #filter = 1 means on, filter = 0 means off THIS IS SPECIFIC TO LOCATION FILTERS NOT SEX, AGE OR DATE
     filter = 0
-
+    
 
     fdata = data[data['sex'] == sexChoice]
     fdata = fdata[fdata['extract_date'] == '2014-10-01']
