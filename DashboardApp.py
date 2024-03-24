@@ -2,7 +2,6 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import calendar
 from flask import Flask, render_template, request
-from string import capwords
 from collections import deque
 
 app = Flask(__name__)
@@ -135,14 +134,17 @@ def dashboard():
 
 @app.route('/log-in')
 def login():
+    # form put in html but not used yet
     return render_template('log-in-page.html')
 
 @app.route('/settings')
 def settings():
     return render_template('settings-page.html')
 
-@app.route('/sign-up')
+@app.route('/sign-up',methods=['GET','POST'])
 def signup():
+    df = pd.read_csv("dataset\\users.csv")
+    df
     return render_template('sign-up-page.html')
 
 @app.route('/snapshot')
