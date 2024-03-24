@@ -156,7 +156,7 @@ def login():
     if request.method == 'POST':
         df = pd.read_csv("dataset\\users.csv")
         if request.form['email'] not in df['email'].values:
-                return render_template('log-in-page.html', error="User not registered"), 409
+            return render_template('log-in-page.html', error="User not registered"), 409
         if request.form['password'] != df[df['email'] == request.form['email']]['password'].values[0]:
             return render_template('log-in-page.html', error="Incorrect password"), 409
         id = df[df['email'] == request.form['email']]['id'].values[0]
