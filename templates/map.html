@@ -13,16 +13,58 @@
             width: 100vw;
             height: 100vh;
             margin: 0;
+            position: relative;
+        }
+        #map {
+            width: 100%;
+            height: 100%;
+            z-index: 0; 
+        }
+        .ui-container {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: rgba(255, 255, 255, 0.5);
+            padding: 10px;
+            border-radius: 5px;
+            z-index: 1; 
         }
     </style>
 </head>
 
 <body>
-<div id="map" style="width: 100%; height: 100%;"></div>
+<div id="map"></div>
+<div class="ui-container">
+    <form id="formData" action="/map" method="post">
+        <div id="layerForm">
+            <input type="radio" id="rgn" name="layer" value="rgn">
+            <label for="rgn">Region</label><br>
+            <input type="radio" id="itl" name="layer" value="itl">
+            <label for="itl">ITL</label><br>
+            <input type="radio" id="lad" name="layer" value="lad">
+            <label for="lad">LAD</label><br>
+        </div>
+        <div id="ageForm">
+            <label for="start_age">Start Age:</label>
+            <input type="number" id="start_age" name="start_age" min="0" max="95" required><br>
+            <label for="end_age">End Age:</label>
+            <input type="number" id="end_age" name="end_age" min="0" max="95" required><br>
+        </div>
+        <div id="sexForm">
+            <input type="radio" id="male" name="sex" value="male">
+            <label for="male">Male</label><br>
+            <input type="radio" id="female" name="sex" value="female">
+            <label for="female">Female</label><br>
+            <input type="radio" id="persons" name="sex" value="persons">
+            <label for="persons">Both</label><br>
+        </div>
+        <input type="submit" value="Submit">
+    </form>
+</div>
 
 <script>
     const token = 'pk.eyJ1IjoiZGlhbmFtZW93IiwiYSI6ImNqcmh4aWJnOTIxemI0NXA0MHYydGwzdm0ifQ.9HakB25m0HLT-uDY2yat7A';
-    const data = {{ data|safe }};
+    const data = {{ DATA|safe }};
     const startAge = {{ start_age }};
     const endAge = {{ end_age }};
     const maxElevation = {{ max_elevation }};
@@ -31,9 +73,6 @@
 
     const { DeckGL, ColumnLayer } = deck;
 
-    function ryb2rgb(r, y, b) {
-        // Your ryb2rgb implementation here
-    }
 
     new DeckGL({
         mapboxApiAccessToken: token,
@@ -61,6 +100,46 @@
                 getElevation: (d) => d.elevation,
             }),
         ],
+    });
+
+    // Add event listener for radio button change
+    document.getElementById('layerForm').addEventListener('change', function(event) {
+        const selectedLayer = event.target.value;
+        console.log(selectedLayer); // You can do further processing based on the selected layer
+        // Update layers based on the selected layer
+        // For example, you may want to fetch different data based on the selected layer and update the ColumnLayer
+    });
+
+    // Function to store form data in local storage
+    function storeFormData() {
+        const formData = {
+            layer: document.querySelector('input[name="layer"]:checked').value,
+            start_age: document.getElementById('start_age').value,
+            end_age: document.getElementById('end_age').value,
+            sex: document.querySelector('input[name="sex"]:checked').value
+        };
+        localStorage.setItem('formData', JSON.stringify(formData));
+    }
+
+    // Function to retrieve and populate form data from local storage
+    function populateFormData() {
+        const storedFormData = JSON.parse(localStorage.getItem('formData'));
+        if (storedFormData) {
+            document.querySelector(`input[name="layer"][value="${storedFormData.layer}"]`).checked = true;
+            document.getElementById('start_age').value = storedFormData.start_age;
+            document.getElementById('end_age').value = storedFormData.end_age;
+            document.querySelector(`input[name="sex"][value="${storedFormData.sex}"]`).checked = true;
+        }
+    }
+
+    // Add event listener for form submission
+    document.getElementById('formData').addEventListener('submit', function(event) {
+        storeFormData();
+    });
+
+    // Populate form data when the page loads
+    window.addEventListener('DOMContentLoaded', function() {
+        populateFormData();
     });
 </script>
 </body>
