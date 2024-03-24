@@ -49,7 +49,6 @@ def token_required(f):
     def decorator(*args, **kwargs):
         if "token" in session.keys(): token = session['token']
         else: token = None
-        print(token, file=sys.stderr)
         if not token: return render_template('log-in-page.html',error="Authentication Token missing, please log in")
         token_payload = decode_auth_token(token)
         try: id = token_payload["sub"]
