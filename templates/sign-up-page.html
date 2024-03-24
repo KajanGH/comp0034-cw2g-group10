@@ -87,6 +87,7 @@
                     id = "fullname"
                     name = "fullname"
                     type="text"
+                    required
                   />
                 </div>
               </div>
@@ -101,6 +102,7 @@
                     id = "username"
                     name = "username"
                     type="text"
+                    required
                   />
                 </div>
               </div>
@@ -115,6 +117,7 @@
                     id = "email"
                     name = "email"
                     type="text"
+                    required
                   />
                 </div>
               </div>
@@ -129,6 +132,7 @@
                     id = "password"
                     name = "password"
                     type="password"
+                    required
                   />
                 </div>
               </div>
@@ -142,6 +146,7 @@
                   id = "repeatpassword"
                   name = "repeatpassword"
                   type="password"
+                  required
                 />
               </div>
             </div>
@@ -198,6 +203,16 @@
         settingsIcon.addEventListener("click", function (e) {
           window.location.href = "/settings";
         });
+      }
+      var errorMessage = "{{ error }}";
+      if (errorMessage) {
+        // Display the error message as an alert
+        alert(errorMessage);
+      }
+      var successMessage = "{{ success }}";
+      if (successMessage) {
+        // Display the success message as an alert
+        alert(successMessage);
       }
       </script>
   </body>

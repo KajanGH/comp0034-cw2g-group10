@@ -75,6 +75,9 @@
                   class="frame-input"
                   placeholder="Email Address..."
                   type="text"
+                  id = "email"
+                  name = "email"
+                  required
                 />
               </div>
             </div>
@@ -86,17 +89,21 @@
                     class="password2"
                     placeholder="Password..."
                     type="password"
+                    id = "password"
+                    name = "password"
+                    required
                   />
                 </div>
               </div>
-            </form>
+
             </div>
           </div>
         </div>
         <div class="frame1">
-          <button class="log-in-container">
+          <button type="submit" class="log-in-container">
             <div class="log-in2">Log In</div>
           </button>
+        </form>
           <a class="dont-have-an-container" href="/sign-up"
             >Don’t have an account yet? Sign up
             <span class="here">HERE</span>
@@ -146,6 +153,16 @@
         settingsIcon.addEventListener("click", function (e) {
           window.location.href = "/settings";
         });
+      }
+      var errorMessage = "{{ error }}";
+      if (errorMessage) {
+        // Display the error message as an alert
+        alert(errorMessage);
+      }
+      var successMessage = "{{ success }}";
+      if (successMessage) {
+        // Display the success message as an alert
+        alert(successMessage);
       }
       </script>
   </body>
