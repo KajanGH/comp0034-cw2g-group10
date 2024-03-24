@@ -6,6 +6,7 @@ from flask import Flask, render_template, request, session
 from collections import deque
 from helpers import encode_auth_token, token_required
 from pathlib import Path
+import sys
 
 app = Flask(__name__)
 app.secret_key = secrets.token_hex(16)
@@ -191,6 +192,7 @@ def snapshot():
     return render_template('snapshot-page.html')
 
 @app.route('/map', methods=['GET', 'POST'])
+#@token_required
 def map():
     # Perform data analysis and calculations
     start_age = 0
@@ -199,10 +201,10 @@ def map():
     sexChoice = 'persons'
 
     if request.method == 'POST':
-        if 'selected_layer' in request.form.keys(): selected_layer = request.form.get('layer')
-        if 'sexChoice' in request.form.keys(): sexChoice = request.form.get('sex')
+        if 'layer' in request.form.keys(): selected_layer = request.form.get('layer')
+        if 'sex' in request.form.keys(): sexChoice = request.form.get('sex')
         if 'start_age' in request.form.keys() and request.form['start_age']: start_age = int(request.form.get('start_age'))
-        if 'end_age' in request.form.keys() and request.form['end_age']: end_age = int(request.get('end_age'))
+        if 'end_age' in request.form.keys() and request.form['end_age']: end_age = int(request.form.get('end_age'))
 
     # Update data based on the selected layer
     if selected_layer == 'lad':
