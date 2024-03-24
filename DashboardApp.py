@@ -1,10 +1,13 @@
 import pandas as pd
 import matplotlib.pyplot as plt
 import calendar
-from flask import Flask, render_template, request
+import secrets
+from flask import Flask, render_template, request, session
 from collections import deque
+from helpers import encode_auth_token, token_required
 
 app = Flask(__name__)
+app.secret_key = secrets.token_hex(16)
 
 # Load data
 lad_url = 'https://media.githubusercontent.com/media/KajanGH/data/main/prepared_lad.csv'
@@ -16,11 +19,13 @@ def index():
     return render_template('index.html')
 
 @app.route('/account')
+@token_required
 def account():
     return render_template('account-page.html')
 
 search = deque(["","",""],maxlen=3)
 @app.route('/analytics', methods=['GET', 'POST'])
+@token_required
 def analytics():
     form = ""
     if request.method == 'POST':
@@ -134,44 +139,48 @@ def analytics():
     return render_template('analytics-page.html',DataToRender = search )
 
 @app.route('/dashboard')
+@token_required
 def dashboard():
     return render_template('dashboard-page.html')
 
-@app.route('/log-in')
+@app.route('/log-in', methods = ['GET','POST'])
 def login():
-    # form put in html but not used yet
-    return render_template('log-in-page.html')
+    if request.method == 'POST':
+        df = pd.read_csv("dataset\\users.csv")
+        if request.form['email'] not in df['email'].values:
+                return render_template('log-in-page.html', error="User not registered"), 409
+        if request.form['password'] != df[df['email'] == request.form['email']]['password'].values[0]:
+            return render_template('log-in-page.html', error="Incorrect password"), 409
+        id = df[df['email'] == request.form['email']]['id'].values[0]
+        session['token'] = encode_auth_token(int(id))
+        return render_template('log-in-page.html',success="Logged in successfully"),200
+    return render_template('log-in-page.html'),200
 
 @app.route('/settings')
+@token_required
 def settings():
     return render_template('settings-page.html')
 
 @app.route('/sign-up',methods=['GET','POST'])
 def signup():
-    df = pd.read_csv("dataset\\users.csv")
-    df
-    return render_template('sign-up-page.html')
+    if request.method == 'POST':
+        df = pd.read_csv("dataset\\users.csv")
+        if request.form['password'] != request.form['repeatpassword']:
+            return render_template('sign-up-page.html', error="Passwords do not match"), 409
+        if request.form['email'] in df['email'].values: 
+            return render_template('sign-up-page.html', error="Email already exists"), 409
+        line = len(df)
+        for field in request.form.keys():
+            df.at[line,field] = request.form[field]
+        df.at[len(df)-1,'id'] = line
+        df.to_csv("dataset\\users.csv",index=False)
+        return render_template('sign-up-page.html', success="User registered successfully"), 200
+    return render_template('sign-up-page.html'), 200
 
 @app.route('/snapshot')
+@token_required
 def snapshot():
     return render_template('snapshot-page.html')
-
-@app.route('/fake-graph1')
-def graph1():
-    return render_template('fake-graph1-popup.html')
-
-@app.route('/fake-graph2')
-def graph2():
-    return render_template('fake-graph2-popup.html')
-
-@app.route('/fake-graph3')
-def graph3():
-    return render_template('fake-graph3-popup.html')
-
-@app.route('/fake-graph4')
-def graph4():
-    return render_template('fake-graph4-popup.html')
-
 
 @app.route('/map')
 def map():
