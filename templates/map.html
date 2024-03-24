@@ -88,6 +88,12 @@
             <input class="text" type="radio" id="persons" name="sex" value="persons">
             <label for="persons">Both</label><br>
         </div>
+        <div class="slidecontainer">
+          <text>Year:</text>
+          <input type="range" min="2014" max="2025" value = "2024" class="slider" id="myRange">
+          <text class="smalltext">Value: <span id="demo"></span></text>
+        </div>
+
         <button type="submit" class="log-in-container">
             <div class="log-in2">Submit</div>
         </button>
@@ -148,7 +154,8 @@
             layer: document.querySelector('input[name="layer"]:checked').value,
             start_age: document.getElementById('start_age').value,
             end_age: document.getElementById('end_age').value,
-            sex: document.querySelector('input[name="sex"]:checked').value
+            sex: document.querySelector('input[name="sex"]:checked').value,
+            year: document.getElementById('myRange').value
         };
         localStorage.setItem('formData', JSON.stringify(formData));
     }
@@ -161,6 +168,8 @@
             document.getElementById('start_age').value = storedFormData.start_age;
             document.getElementById('end_age').value = storedFormData.end_age;
             document.querySelector(`input[name="sex"][value="${storedFormData.sex}"]`).checked = true;
+            document.getElementById('myRange').value = storedFormData.year;
+            document.getElementById('demo').innerHTML = storedFormData.year;
         }
     }
 
@@ -214,6 +223,14 @@
         settingsIcon.addEventListener("click", function (e) {
           window.location.href = "/settings";
         });
+      }
+      var slider = document.getElementById("myRange");
+      var output = document.getElementById("demo");
+      output.innerHTML = slider.value; // Display the default slider value
+
+      // Update the current slider value (each time you drag the slider handle)
+      slider.oninput = function() {
+        output.innerHTML = this.value;
       }
 </script>
 </body>
