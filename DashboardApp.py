@@ -195,18 +195,14 @@ def map():
     # Perform data analysis and calculations
     start_age = 0
     end_age = 95
+    selected_layer = 'rgn'
+    sexChoice = 'persons'
 
     if request.method == 'POST':
-        selected_layer = request.form.get('layer') 
-        sexChoice = request.form.get('sex')
-        start_age = int(request.form.get('start_age'))
-        end_age = int(request.form.get('end_age'))
-    else:
-        selected_layer = 'rgn'
-        sexChoice = 'persons'
-        start_age = 0
-        end_age = 95
-
+        if 'selected_layer' in request.form.keys(): selected_layer = request.form.get('layer')
+        if 'sexChoice' in request.form.keys(): sexChoice = request.form.get('sex')
+        if 'start_age' in request.form.keys() and request.form['start_age']: start_age = int(request.form.get('start_age'))
+        if 'end_age' in request.form.keys() and request.form['end_age']: end_age = int(request.get('end_age'))
 
     # Update data based on the selected layer
     if selected_layer == 'lad':
