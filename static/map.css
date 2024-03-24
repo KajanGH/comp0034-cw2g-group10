@@ -1,0 +1,65 @@
+body {
+    width: 100vw;
+    height: 100vh;
+    margin: 0;
+    position: relative;
+    overflow: hidden;
+}
+#map {
+    width: 100%;
+    height: 100%;
+    z-index: 0; 
+    overflow: hidden;
+}
+.ui-container {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background-color: rgba(255, 255, 255, 0.5);
+    padding: 10px;
+    border-radius: 5px;
+    z-index: 1; 
+}
+.camera-icon5,
+.logo-icon5,
+.world-icon5 {
+  width: 138px;
+  position: relative;
+  height: 109px;
+  object-fit: cover;
+  cursor: pointer;
+  z-index: 2;
+}
+.camera-icon5,
+.world-icon5 {
+  width: 50px;
+  height: 50px;
+}
+.camera-icon5 {
+  height: 44.4px;
+}
+.sidebar-frame5,
+.user-icon-parent3,
+.world-icon-parent3 {
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--gap-73xl);
+
+}
+.sidebar-frame5,
+.user-icon-parent3 {
+  gap: var(--gap-5xl);
+}
+.sidebar-frame5 {
+  align-self: normal;
+  justify-content: flex-start;
+  gap: 175px;
+  z-index: 1;
+  position: absolute;
+  top: 0.1px;
+  left: 0.1px;
+  background-color: rgba(255, 255, 255, 0.5);
+}
