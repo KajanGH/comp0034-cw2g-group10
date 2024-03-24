@@ -60,30 +60,37 @@
       </div>
 <div class="frame-parent1" id="map"></div>
 <div class="ui-container">
+    <div class="filters-wrapper">
+        <b class="filters1">Filters</b>
+      </div>
     <form id="formData" action="/map" method="post">
-        <div id="layerForm">
-            <input type="radio" id="rgn" name="layer" value="rgn" required>
+        <div class="text" id="layerForm">
+            <text class="text">Layer: </text><br>
+            <input class="text" type="radio" id="rgn" name="layer" value="rgn" required>
             <label for="rgn">Region</label><br>
-            <input type="radio" id="itl" name="layer" value="itl">
+            <input class="text" type="radio" id="itl" name="layer" value="itl">
             <label for="itl">ITL</label><br>
-            <input type="radio" id="lad" name="layer" value="lad">
+            <input class="text" type="radio" id="lad" name="layer" value="lad">
             <label for="lad">LAD</label><br>
         </div>
-        <div id="ageForm">
+        <div class="text" id="ageForm">
             <label for="start_age">Start Age:</label>
-            <input type="number" id="start_age" name="start_age" min="0" max="95"><br>
+            <input class="lower-value2" type="number" id="start_age" name="start_age" min="0" max="95"><br>
             <label for="end_age">End Age:</label>
-            <input type="number" id="end_age" name="end_age" min="0" max="95"><br>
+            <input class="lower-value2" type="number" id="end_age" name="end_age" min="0" max="95"><br>
         </div>
-        <div id="sexForm">
-            <input type="radio" id="male" name="sex" value="male" required>
+        <div class="text" id="sexForm">
+            <text class="text">Sex: </text><br>
+            <input class="text" type="radio" id="male" name="sex" value="male" required>
             <label for="male">Male</label><br>
-            <input type="radio" id="female" name="sex" value="female">
+            <input class="text" type="radio" id="female" name="sex" value="female">
             <label for="female">Female</label><br>
-            <input type="radio" id="persons" name="sex" value="persons">
+            <input class="text" type="radio" id="persons" name="sex" value="persons">
             <label for="persons">Both</label><br>
         </div>
-        <input type="submit" value="Submit">
+        <button type="submit" class="log-in-container">
+            <div class="log-in2">Submit</div>
+        </button>
     </form>
 </div>
 
@@ -166,7 +173,7 @@
     window.addEventListener('DOMContentLoaded', function() {
         populateFormData();
     });
-    
+
     var logoImage = document.getElementById("logoImage");
       if (logoImage) {
         logoImage.addEventListener("click", function (e) {
