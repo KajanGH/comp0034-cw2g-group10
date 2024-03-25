@@ -4,12 +4,11 @@
   top: calc(50% + 95.5px);
   left: calc(50% - 243.5px);
   display: inline-block;
-  width: 155px;
-  height: 55px;
+  width: auto;
+  height: auto;
 }
 .additional-info {
   top: calc(50% + 137.5px);
-  width: 195px;
 }
 .saved-image-child {
   position: absolute;
@@ -18,6 +17,7 @@
   background-color: var(--color-gainsboro-100);
   width: 488px;
   height: 254px;
+  object-fit: fill;
 }
 .saved-graph {
   position: absolute;
