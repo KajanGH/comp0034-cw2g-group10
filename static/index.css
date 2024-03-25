@@ -5,6 +5,7 @@
   to {
     box-shadow: inset 0 0 14px 0 rgb(0 0 0/50%);
   }
+  
 }
 .frame-child {
   width: 688px;
@@ -354,3 +355,4 @@
   justify-content: flex-start;
   gap: 43px;
 }
+
