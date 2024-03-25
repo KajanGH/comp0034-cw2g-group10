@@ -2,11 +2,25 @@ import csv
 import jwt
 import sys
 import pandas as pd
+import os
+import matplotlib.pyplot as plt
 from datetime import datetime, timedelta, timezone
 from flask import make_response, current_app as app, request, session, render_template
 from functools import wraps
 
 USERS_FILE = 'dataset\\users.csv'
+
+def saveSnapshot(snapshots,form,date):
+    snapshotdata = pd.read_csv('static\snapshot\snapshotdata.csv')
+    if len(snapshotdata) == 10: snapshotdata = snapshotdata.drop(snapshotdata.index[0])
+    snapshotdata.at[snapshots[0],"form"] = form
+    snapshotdata.at[snapshots[0],"date"] = date.today()
+    if os.path.exists(f'static/snapshot/graph{snapshots[0]}.png'): os.remove(f'static/snapshot/graph{snapshots[0]}.png')
+    plt.savefig(f'static/snapshot/graph{snapshots[0]}.png')
+    snapshotdata.at[snapshots[0],"img"] = f'static/snapshot/graph{snapshots[0]}.png'
+    snapshots.append(snapshots[0])
+    snapshotdata.to_csv('static\snapshot\snapshotdata.csv',index=False)
+    return snapshots
 def encode_auth_token(id):
     """Generates the Auth Token."""
     try:
