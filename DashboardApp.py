@@ -6,7 +6,9 @@ from flask import Flask, render_template, request, session
 from collections import deque
 from helpers import encode_auth_token, token_required
 from pathlib import Path
+from datetime import date
 import sys
+import os
 
 app = Flask(__name__)
 app.secret_key = secrets.token_hex(16)
@@ -33,9 +35,13 @@ def account():
     return render_template('account-page.html')
 
 search = deque(["","",""],maxlen=3)
+snapshots = deque([0,1,2,3,4,5,6,7,8],maxlen=9)
 @app.route('/analytics', methods=['GET', 'POST'])
-@token_required
+#@token_required
 def analytics():
+    save = True
+    snapshotdata = pd.read_csv('static\snapshot\snapshotdata.csv')
+    if len(snapshotdata) == 10: snapshotdata = snapshotdata.drop(snapshotdata.index[0])
     form = ""
     if request.method == 'POST':
         df = pd.read_csv('dataset/prepared_itl.csv',  usecols=lambda col: 'age' in col or col in ['Region','ITL', 'extract_date', 'sex'])
@@ -83,6 +89,14 @@ def analytics():
             plt.annotate(txt, (age_sum_by_year.index[i], age_sum_by_year.values[i]), textcoords="offset points", xytext=(0,10), ha='center')
         plt.tight_layout()
         plt.savefig('static/public/graph1.png')
+        if save: 
+            snapshotdata.at[snapshots[0],"form"] = form
+            snapshotdata.at[snapshots[0],"date"] = date.today()
+            if os.path.exists(f'static/snapshot/graph{snapshots[0]}.png'): os.remove(f'static/snapshot/graph{snapshots[0]}.png')
+            plt.savefig(f'static/snapshot/graph{snapshots[0]}.png')
+            snapshotdata.at[snapshots[0],"img"] = f'static/snapshot/graph{snapshots[0]}.png'
+            snapshots.append(snapshots[0])
+            
 
         ####AGE DISTRIBUTION GRAPH####
         sumdict = {}
@@ -104,6 +118,14 @@ def analytics():
                         textcoords="offset points",
                         ha='center', va='bottom')
         plt.savefig('static/public/graph2.png')
+        if save:
+            snapshotdata.at[snapshots[0],"form"] = form
+            snapshotdata.at[snapshots[0],"date"] = date.today()
+            if os.path.exists(f'static/snapshot/graph{snapshots[0]}.png'): os.remove(f'static/snapshot/graph{snapshots[0]}.png')
+            plt.savefig(f'static/snapshot/graph{snapshots[0]}.png')
+            snapshotdata.at[snapshots[0],"img"] = f'static/snapshot/graph{snapshots[0]}.png'
+            snapshots.append(snapshots[0])
+
         ###SEX PIE CHART###
         sex_age_counts = df.groupby('sex')[age_columns].sum()
 
@@ -143,9 +165,15 @@ def analytics():
         plt.savefig('static/public/graph5.png')
 
         search.append(form)
-        return render_template('analytics-page.html',DataToRender = search )
-    # Render analytics page template
+
+        if save: snapshotdata.to_csv('static\snapshot\snapshotdata.csv',index=False)
     return render_template('analytics-page.html',DataToRender = search )
+
+@app.route('/snapshot')
+#@token_required
+def snapshot():
+    snapshotdata = pd.read_csv('static\snapshot\snapshotdata.csv')
+    return render_template('snapshot-page.html',dates = snapshotdata['date'].values, info = snapshotdata['form'].values, imgs=snapshotdata['img'].values)
 
 @app.route('/dashboard')
 @token_required
@@ -185,11 +213,6 @@ def signup():
         df.to_csv("dataset\\users.csv",index=False)
         return render_template('sign-up-page.html', success="User registered successfully"), 200
     return render_template('sign-up-page.html'), 200
-
-@app.route('/snapshot')
-@token_required
-def snapshot():
-    return render_template('snapshot-page.html')
 
 @app.route('/map', methods=['GET', 'POST'])
 #@token_required
