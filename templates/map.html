@@ -90,7 +90,7 @@
         </div>
         <div class="slidecontainer">
           <text>Year:</text>
-          <input type="range" min="2014" max="2025" value = "2024" class="slider" id="myRange">
+          <input type="range" min="24168" max="24300" value = "24291" class="slider" id="year">
           <text class="smalltext">Value: <span id="demo"></span></text>
         </div>
 
@@ -155,7 +155,7 @@
             start_age: document.getElementById('start_age').value,
             end_age: document.getElementById('end_age').value,
             sex: document.querySelector('input[name="sex"]:checked').value,
-            year: document.getElementById('myRange').value
+            year: document.getElementById('demo').value
         };
         localStorage.setItem('formData', JSON.stringify(formData));
     }
@@ -168,7 +168,7 @@
             document.getElementById('start_age').value = storedFormData.start_age;
             document.getElementById('end_age').value = storedFormData.end_age;
             document.querySelector(`input[name="sex"][value="${storedFormData.sex}"]`).checked = true;
-            document.getElementById('myRange').value = storedFormData.year;
+            document.getElementById('year').value = storedFormData.year;
             document.getElementById('demo').innerHTML = storedFormData.year;
         }
     }
@@ -224,13 +224,21 @@
           window.location.href = "/settings";
         });
       }
-      var slider = document.getElementById("myRange");
+      var months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+      function getMonthName(value) {
+        var year = Math.floor(value / 12); // Calculate the year
+        var monthIndex = value % 12; // Get the index of the month in the array
+        var month = months[monthIndex]; // Get the month name
+        return year + ' ' + month; // Concatenate year and month
+      }
+
+      var slider = document.getElementById("year");
       var output = document.getElementById("demo");
-      output.innerHTML = slider.value; // Display the default slider value
+      output.innerHTML = getMonthName(24291);; // Display the default slider value
 
       // Update the current slider value (each time you drag the slider handle)
       slider.oninput = function() {
-        output.innerHTML = this.value;
+      output.innerHTML = getMonthName(this.value);
       }
 </script>
 </body>

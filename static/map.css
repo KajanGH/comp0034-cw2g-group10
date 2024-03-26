@@ -112,7 +112,7 @@ body {
   text-align: center;
 }
 .slidecontainer {
-  width: 100%; /* Width of the outside container */
+  width:310px; /* Width of the outside container */
   padding-bottom: 20px;
   padding-top: 20px;
 }
