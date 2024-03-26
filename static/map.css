@@ -166,3 +166,25 @@ body {
   font-family: Arial, Helvetica, sans-serif;
   color: var(--color-black);
 }
+
+.full-page-image {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1; /* Ensure the image stays at the bottom of the z-axis */
+  background-image: '/static/public/mapbasepic.png'; /* Specify the path to your image */
+  background-size: cover;
+}
+
+.text-box {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background-color: rgba(255, 255, 255, 0.8); /* Semi-transparent white background */
+  padding: 20px;
+  text-align: center;
+  z-index: -1; /* Place the text box on top of the image */
+}
