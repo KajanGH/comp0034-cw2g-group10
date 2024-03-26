@@ -11,6 +11,15 @@ body {
     z-index: 0; 
     overflow: hidden;
 }
+#tooltip {
+  position: absolute;
+  background: white;
+  padding: 10px;
+  border: 1px solid #ccc;
+  display: none;
+  z-index: 2; 
+  pointer-events: none;
+}
 .ui-container {
     position: absolute;
     top: 100px;

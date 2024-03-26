@@ -231,13 +231,17 @@ def map():
     # Update data based on the selected layer
     if selected_layer == 'lad':
         data = lad_data
+        location = 1
     elif selected_layer == 'itl':
         data = itl_data
+        location = 2
     elif selected_layer == 'rgn':
         data = rgn_data
+        location = 3
     else:
         # Handle invalid selection
         data = rgn_data
+        location = 3
 
     if year:
         formatted_date = f'{round(year/12)}-10-01'
@@ -317,7 +321,7 @@ def map():
     fdata['green'] = fdata['elevation'].apply(interpolate_colour_g)
     
     # Pass processed data to template
-    return render_template('map.html', DATA=fdata.to_dict(orient='records'), start_age=start_age, end_age=end_age, max_elevation=max_elevation, min_elevation=min_elevation, scale=scale)
+    return render_template('map.html', DATA=fdata.to_dict(orient='records'), start_age=start_age, end_age=end_age, max_elevation=max_elevation, min_elevation=min_elevation, scale=scale, selected_layer=selected_layer)
 
 
 

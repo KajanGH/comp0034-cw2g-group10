@@ -55,7 +55,7 @@
   z-index: 1;
 }
 .frame-parent {
-  width: 1920px;
+  width: 100%;
   background-color: #f8fcf2;
   height: 109px;
   position: relative;
@@ -270,7 +270,7 @@
   font-family: var(--font-almarai);
 }
 .frame-group {
-  width: 1920px;
+  width: 100%;
   padding: 0 var(--padding-5xl);
   box-sizing: border-box;
   gap: var(--gap-29xl);

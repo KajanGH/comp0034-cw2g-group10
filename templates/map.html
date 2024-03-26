@@ -100,7 +100,26 @@
     </form>
 </div>
 
+<div id="map"></div>
+<div id="tooltip"></div>
+
 <script>
+    document.getElementById('formData').addEventListener('submit', function(event) {
+    const startAge = parseInt(document.getElementById('start_age').value);
+    const endAge = parseInt(document.getElementById('end_age').value);
+    
+    if (startAge > endAge) {
+        // Prevent form submission
+        event.preventDefault();
+        // Display an alert message or any other indication to the user
+        alert("Start age must be equal to or lower than end age.");
+    } else {
+        // Start age is equal to or lower than end age, proceed with form submission
+        storeFormData();
+    }
+});
+
+
     const token = 'pk.eyJ1IjoiZGlhbmFtZW93IiwiYSI6ImNqcmh4aWJnOTIxemI0NXA0MHYydGwzdm0ifQ.9HakB25m0HLT-uDY2yat7A';
     const data = {{ DATA|safe }};
     const startAge = {{ start_age }};
@@ -108,11 +127,23 @@
     const maxElevation = {{ max_elevation }};
     const minElevation = {{ min_elevation }};
     const scale = {{ scale }};
+    const selectedLayer = '{{ selected_layer }}';
 
 
     
     const { DeckGL, ColumnLayer } = deck;
 
+    const getTooltipContent = (d) => {
+        let tooltipContent = '';
+        if (selectedLayer === 'lad') {
+            tooltipContent = `<div>LAD: ${d.LAD}</div><div>ITL: ${d.ITL}</div><div>Region: ${d.Region}</div><div>Elevation: ${d.elevation}</div>`;
+        } else if (selectedLayer === 'itl') {
+            tooltipContent = `<div>ITL: ${d.ITL}</div><div>Region: ${d.Region}</div><div>Elevation: ${d.elevation}</div>`;
+        } else if (selectedLayer === 'rgn') {
+            tooltipContent = `<div>Region: ${d.Region}</div><div>Elevation: ${d.elevation}</div>`;
+        }
+        return tooltipContent;
+    };
 
     new DeckGL({
         mapboxApiAccessToken: token,
@@ -138,10 +169,29 @@
                 getPosition: (d) => [d.Longitude, d.Latitude],
                 getFillColor: (d) => [d.red, d.green, d.blue, 160],
                 getElevation: (d) => d.elevation,
+                pickable: true,
+                onHover: ({ object, x, y }) => {
+                    const el = document.getElementById('tooltip');
+                    if (object) {
+
+                        const tooltipContent = getTooltipContent(object);
+                        el.innerHTML = tooltipContent;;
+                        el.style.display = 'block';
+                        el.style.opacity = 0.9;
+                        el.style.left = x + 'px';
+                        el.style.top = y + 'px';
+                    } else {
+                        el.style.opacity = 0.0;
+                    }
+                },
             }),
         ],
     });
 
+        // Render the DeckGL instance
+    deckgl.canvas.style.position = 'absolute';
+    
+    document.getElementById('map').appendChild(deckgl.canvas);
     // Add event listener for radio button change
     document.getElementById('layerForm').addEventListener('change', function(event) {
         const selectedLayer = event.target.value;
