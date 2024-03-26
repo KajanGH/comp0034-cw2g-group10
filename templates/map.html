@@ -90,7 +90,7 @@
         </div>
         <div class="slidecontainer">
           <text>Year:</text>
-          <input type="range" min="24168" max="24300" value = "24291" class="slider" id="year">
+          <input type="range" min="24168" max="24300" value = "24291" class="slider" id="year" name="year">
           <text class="smalltext">Value: <span id="demo"></span></text>
         </div>
 
@@ -238,8 +238,9 @@
 
       var slider = document.getElementById("year");
       var output = document.getElementById("demo");
-      output.innerHTML = getMonthName(24291);; // Display the default slider value
 
+      output.innerHTML = getMonthName(24291);; // Display the default slider value
+      
       // Update the current slider value (each time you drag the slider handle)
       slider.oninput = function() {
       output.innerHTML = getMonthName(this.value);

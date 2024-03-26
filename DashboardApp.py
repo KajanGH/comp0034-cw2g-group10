@@ -228,7 +228,6 @@ def map():
         if 'end_age' in request.form.keys() and request.form['end_age']: end_age = int(request.form.get('end_age'))
         if 'year' in request.form.keys() and request.form['year']: year = int(request.form.get('year'))
 
-
     # Update data based on the selected layer
     if selected_layer == 'lad':
         data = lad_data
@@ -241,10 +240,9 @@ def map():
         data = rgn_data
 
     if year:
-        formatted_date = f'{year}-10-01'
+        formatted_date = f'{round(year/12)}-10-01'
     else:
         formatted_date = '2020-10-01'
-    
 
 
 
