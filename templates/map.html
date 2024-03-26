@@ -100,7 +100,7 @@
     </form>
 </div>
 
-<div id="map"></div>
+
 <div id="tooltip"></div>
 
 <script>
@@ -188,10 +188,7 @@
         ],
     });
 
-        // Render the DeckGL instance
-    deckgl.canvas.style.position = 'absolute';
-    
-    document.getElementById('map').appendChild(deckgl.canvas);
+
     // Add event listener for radio button change
     document.getElementById('layerForm').addEventListener('change', function(event) {
         const selectedLayer = event.target.value;

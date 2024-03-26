@@ -17,7 +17,7 @@ body {
   padding: 10px;
   border: 1px solid #ccc;
   display: none;
-  z-index: 2; 
+  z-index: 1; 
   pointer-events: none;
 }
 .ui-container {
