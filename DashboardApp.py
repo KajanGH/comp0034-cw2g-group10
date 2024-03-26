@@ -14,14 +14,11 @@ app = Flask(__name__)
 app.secret_key = secrets.token_hex(16)
 
 
-#PUT LOCATION SELECTION HERE--------------
-    # Load data
-ctry_data = pd.read_csv('dataset/prepared_ctry.csv')
-rgn_data = pd.read_csv('dataset/prepared_rgn.csv')
-itl_data = pd.read_csv('dataset/prepared_itl.csv')
-lad_data = pd.read_csv('dataset/prepared_lad.csv')
-
-
+#PUT LOCATION CSV HERE--------------
+ctry_data = pd.read_csv('Datasets/Edited_Forecasts/combined_forecast_ctry_sex_age_group.csv')
+rgn_data = pd.read_csv('Datasets/Edited_Forecasts/combined_forecast_Region_sex_age_group.csv')
+itl_data = pd.read_csv('Datasets/Edited_Forecasts/combined_forecast_ITL_sex_age_group.csv')
+lad_data = pd.read_csv('Datasets/Edited_Forecasts/combined_forecast_LAD_sex_age_group.csv')
 #-----------------------------------------
 
 
@@ -222,12 +219,15 @@ def map():
     end_age = 95
     selected_layer = 'rgn'
     sexChoice = 'persons'
+    year = 2020
 
     if request.method == 'POST':
         if 'layer' in request.form.keys(): selected_layer = request.form.get('layer')
         if 'sex' in request.form.keys(): sexChoice = request.form.get('sex')
         if 'start_age' in request.form.keys() and request.form['start_age']: start_age = int(request.form.get('start_age'))
         if 'end_age' in request.form.keys() and request.form['end_age']: end_age = int(request.form.get('end_age'))
+        if 'year' in request.form.keys() and request.form['year']: year = int(request.form.get('year'))
+
 
     # Update data based on the selected layer
     if selected_layer == 'lad':
@@ -240,6 +240,10 @@ def map():
         # Handle invalid selection
         data = rgn_data
 
+    if year:
+        formatted_date = f'{year}-10-01'
+    else:
+        formatted_date = '2020-10-01'
     
 
 
@@ -294,7 +298,7 @@ def map():
     
 
     fdata = data[data['sex'] == sexChoice]
-    fdata = fdata[fdata['extract_date'] == '2014-10-01']
+    fdata = fdata[fdata['extract_date'] == formatted_date]
     if [selected_layer == 'lad' or selected_layer == 'itl'] and filter == 1:
         fdata = fdata[fdata['Region'] == 'London']
         if selected_layer == 'lad':
@@ -310,7 +314,7 @@ def map():
     max_elevation = fdata['elevation'].max()
     min_elevation = fdata['elevation'].min()
 
-    scale = 40000 / max_elevation
+    scale = 80000 / max_elevation
     fdata['red'] = fdata['elevation'].apply(interpolate_colour_r)
     fdata['green'] = fdata['elevation'].apply(interpolate_colour_g)
     

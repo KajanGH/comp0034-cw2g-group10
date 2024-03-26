@@ -2,7 +2,7 @@
 <head>
     <title>deck.gl ColumnLayer Example</title>
 
-    <script src="https://unpkg.com/deck.gl@^8.8.0/dist.min.js"></script>
+    
     <script src="https://d3js.org/d3.v5.min.js" type="text/javascript"></script>
     <script src="https://unpkg.com/deck.gl@latest/dist.min.js"></script>
     <script src="https://api.mapbox.com/mapbox-gl-js/v1.12.0/mapbox-gl.js"></script>
@@ -109,6 +109,8 @@
     const minElevation = {{ min_elevation }};
     const scale = {{ scale }};
 
+
+    
     const { DeckGL, ColumnLayer } = deck;
 
 
@@ -131,10 +133,10 @@
                 id: 'column',
                 data: data,
                 diskResolution: 12,
-                radius: 1000,
+                radius: 1500,
                 elevationScale: scale,
                 getPosition: (d) => [d.Longitude, d.Latitude],
-                getFillColor: (d) => [d.red, d.green, 0, 160],
+                getFillColor: (d) => [d.red, d.green, d.blue, 160],
                 getElevation: (d) => d.elevation,
             }),
         ],
@@ -147,6 +149,8 @@
         // Update layers based on the selected layer
         // For example, you may want to fetch different data based on the selected layer and update the ColumnLayer
     });
+
+    
 
     // Function to store form data in local storage
     function storeFormData() {

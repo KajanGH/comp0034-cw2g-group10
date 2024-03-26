@@ -7,61 +7,233 @@
     <script src="https://unpkg.com/deck.gl@latest/dist.min.js"></script>
     <script src="https://api.mapbox.com/mapbox-gl-js/v1.12.0/mapbox-gl.js"></script>
     <link href="https://api.mapbox.com/mapbox-gl-js/v1.12.0/mapbox-gl.css" rel="stylesheet"/>
-
-    <style type="text/css">
-        body {
-            width: 100vw;
-            height: 100vh;
-            margin: 0;
-        }
-    </style>
+    <link rel="stylesheet" href="/static/global.css" />
+    <link rel="stylesheet" href="static\map.css" />
 </head>
 
 <body>
-<div id="map" style="width: 100%; height: 100%;"></div>
+    <div class="sidebar-frame5">
+        <img
+          class="logo-icon5"
+          alt=""
+          src="/static/public/logo@2x.png"
+          id="logoImage"
+        />
+
+        <div class="world-icon-parent3">
+          <img
+            class="world-icon5"
+            alt=""
+            src="/static/public/world-icon@2x.png"
+            id="worldIcon"
+          />
+
+          <img
+            class="world-icon5"
+            alt=""
+            src="/static/public/table-icon@2x.png"
+            id="tableIcon"
+          />
+
+          <img
+            class="camera-icon5"
+            alt=""
+            src="/static/public/camera-icon@2x.png"
+            id="cameraICon"
+          />
+        </div>
+        <div class="user-icon-parent3">
+          <img
+            class="world-icon5"
+            alt=""
+            src="/static/public/user-icon@2x.png"
+            id="userIcon"
+          />
+
+          <img
+            class="world-icon5"
+            alt=""
+            src="/static/public/settings-icon@2x.png"
+            id="settingsIcon"
+          />
+        </div>
+      </div>
+<div class="frame-parent1" id="map"></div>
+<div class="ui-container">
+    <div class="filters-wrapper">
+        <b class="filters1">Filters</b>
+      </div>
+    <form id="formData" action="/map" method="post">
+        <div class="text" id="layerForm">
+            <text class="text">Layer: </text><br>
+            <input class="text" type="radio" id="rgn" name="layer" value="rgn" required>
+            <label for="rgn">Region</label><br>
+            <input class="text" type="radio" id="itl" name="layer" value="itl">
+            <label for="itl">ITL</label><br>
+            <input class="text" type="radio" id="lad" name="layer" value="lad">
+            <label for="lad">LAD</label><br>
+        </div>
+        <div class="text" id="ageForm">
+            <label for="start_age">Start Age:</label>
+            <input class="lower-value2" type="number" id="start_age" name="start_age" min="0" max="95"><br>
+            <label for="end_age">End Age:</label>
+            <input class="lower-value2" type="number" id="end_age" name="end_age" min="0" max="95"><br>
+        </div>
+        <div class="text" id="sexForm">
+            <text class="text">Sex: </text><br>
+            <input class="text" type="radio" id="male" name="sex" value="male" required>
+            <label for="male">Male</label><br>
+            <input class="text" type="radio" id="female" name="sex" value="female">
+            <label for="female">Female</label><br>
+            <input class="text" type="radio" id="persons" name="sex" value="persons">
+            <label for="persons">Both</label><br>
+        </div>
+        <div class="slidecontainer">
+          <text>Year:</text>
+          <input type="range" min="2014" max="2025" value = "2024" class="slider" id="myRange" name="year">
+          <text class="smalltext">Value: <span id="demo"></span></text>
+        </div>
+
+        <button type="submit" class="log-in-container">
+            <div class="log-in2">Submit</div>
+        </button>
+    </form>
+</div>
 
 <script>
     const token = 'pk.eyJ1IjoiZGlhbmFtZW93IiwiYSI6ImNqcmh4aWJnOTIxemI0NXA0MHYydGwzdm0ifQ.9HakB25m0HLT-uDY2yat7A';
-    const data = {{ data|safe }};
-    const startAge = {{ start_age }};
-    const endAge = {{ end_age }};
-    const maxElevation = {{ max_elevation }};
-    const minElevation = {{ min_elevation }};
-    const scale = {{ scale }};
-
+    const scale = 1; // Initialize scale, adjust as needed
+    
     const { DeckGL, ColumnLayer } = deck;
 
-    function ryb2rgb(r, y, b) {
-        // Your ryb2rgb implementation here
-    }
 
-    new DeckGL({
+    const initialViewState = {
+        container: 'map',
+        longitude: -1.932311,
+        latitude: 51.923,
+        pitch: 60,
+        bearing: 0,
+        minZoom: 5,
+        zoom: 7,
+    };
+
+    const deckgl = new DeckGL({
         mapboxApiAccessToken: token,
         mapStyle: 'mapbox://styles/mapbox/dark-v10',
-        initialViewState: {
-            container: 'map',
-            longitude: -1.932311,
-            latitude: 51.923,
-            pitch: 60,
-            bearing: 0,
-            minZoom: 5,
-            zoom: 7,
-        },
-
+        initialViewState: initialViewState,
         controller: true,
-        layers: [
-            new ColumnLayer({
-                id: 'column',
-                data: data,
-                diskResolution: 12,
-                radius: 1000,
-                elevationScale: scale,
-                getPosition: (d) => [d.Longitude, d.Latitude],
-                getFillColor: (d) => [d.red, d.green, 0, 160],
-                getElevation: (d) => d.elevation,
-            }),
-        ],
     });
+
+    // Function to create ColumnLayer with given data
+    function createColumnLayer(data) {
+        return new ColumnLayer({
+            id: 'column',
+            data: data,
+            diskResolution: 12,
+            radius: 1000,
+            elevationScale: scale,
+            getPosition: (d) => [d.Longitude, d.Latitude],
+            getFillColor: (d) => [d.red, d.green, 0, 160],
+            getElevation: (d) => d.elevation,
+        });
+    }
+
+    // Function to update ColumnLayer with new data
+    function updateColumnLayer(newData) {
+    console.log(newData); // Log received data for debugging
+    const oldLayer = deckgl.props.layers.find(layer => layer.id === 'column');
+    const newLayer = createColumnLayer(newData);
+
+    deckgl.setProps({
+        layers: deckgl.props.layers.map(layer => (layer === oldLayer ? newLayer : layer))
+    });
+}
+
+    // Add event listener for form submission
+    document.getElementById('formData').addEventListener('submit', function(event) {
+        event.preventDefault(); // Prevent default form submission behavior
+        
+        // Gather form data
+        const formData = {
+            layer: document.querySelector('input[name="layer"]:checked').value,
+            start_age: document.getElementById('start_age').value,
+            end_age: document.getElementById('end_age').value,
+            sex: document.querySelector('input[name="sex"]:checked').value,
+            year: document.getElementById('myRange').value
+        };
+
+        // Send AJAX request
+        fetch('/map', {method: 'POST',
+            body: JSON.stringify(formData), // Convert form data to JSON
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
+        .then(newData => {
+            // Update layers based on the new data
+            updateColumnLayer(newData);
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
+    });
+
+    // Populate form data when the page loads
+    window.addEventListener('DOMContentLoaded', function() {
+        populateFormData();
+    });
+
+    // Function to store form data in local storage
+    function storeFormData() {
+        const formData = {
+            layer: document.querySelector('input[name="layer"]:checked').value,
+            start_age: document.getElementById('start_age').value,
+            end_age: document.getElementById('end_age').value,
+            sex: document.querySelector('input[name="sex"]:checked').value,
+            year: document.getElementById('myRange').value
+        };
+        localStorage.setItem('formData', JSON.stringify(formData));
+    }
+
+    // Function to retrieve and populate form data from local storage
+    function populateFormData() {
+        const storedFormData = JSON.parse(localStorage.getItem('formData'));
+        if (storedFormData) {
+            document.querySelector(`input[name="layer"][value="${storedFormData.layer}"]`).checked = true;
+            document.getElementById('start_age').value = storedFormData.start_age;
+            document.getElementById('end_age').value = storedFormData.end_age;
+            document.querySelector(`input[name="sex"][value="${storedFormData.sex}"]`).checked = true;
+            document.getElementById('myRange').value = storedFormData.year;
+            document.getElementById('demo').innerHTML = storedFormData.year;
+        }
+    }
+
+    // Add event listeners for navigation icons
+    ['logoImage', 'worldIcon', 'tableIcon', 'cameraICon', 'userIcon', 'settingsIcon'].forEach(iconId => {
+        const icon = document.getElementById(iconId);
+        if (icon) {
+            icon.addEventListener('click', function (e) {
+                window.location.href = `/${iconId.toLowerCase().replace('icon', '')}`;
+            });
+        }
+    });
+
+    var slider = document.getElementById("myRange");
+    var output = document.getElementById("demo");
+    output.innerHTML = slider.value; // Display the default slider value
+
+    // Update the current slider value (each time you drag the slider handle)
+    slider.oninput = function() {
+        output.innerHTML = this.value;
+    }
 </script>
 </body>
 </html>
+
+           
