@@ -219,20 +219,24 @@ def map():
     end_age = 95
     selected_layer = 'rgn'
     sexChoice = 'persons'
-    year = 2020
+    year = 2023
     remove_values = []
     message = 'None Hidden'
     radius = 1000
+    datecorrection = ""
 
     if request.method == 'POST':
         if 'layer' in request.form.keys(): selected_layer = request.form.get('layer')
         if 'sex' in request.form.keys(): sexChoice = request.form.get('sex')
         if 'start_age' in request.form.keys() and request.form['start_age']: start_age = int(request.form.get('start_age'))
         if 'end_age' in request.form.keys() and request.form['end_age']: end_age = int(request.form.get('end_age'))
-        if 'year' in request.form.keys() and request.form['year']: year = int(request.form.get('year'))
+        if 'year' in request.form.keys() and request.form['year']:
+            year = int(request.form.get('year'))
+            month = int(request.form.get('year'))%12 + 1
+
+
         if 'remove' in request.form.keys() and request.form['remove']:
             remove_values = request.form.get('remove').split('/')
-
     # Update data based on the selected layer
     if selected_layer == 'lad':
         data = lad_data
@@ -246,16 +250,37 @@ def map():
     else:
         # Handle invalid selection
         data = rgn_data
-
-    if year:
-        formatted_date = f'{round(year/12)}-10-01'
+  
+    if 'year' in request.form.keys():
+        formatted_date = f'{round(year/12)}-{month}-01'
     else:
         formatted_date = '2020-10-01'
 
+    i = 0
 
+    while data[data['extract_date'] == formatted_date].empty:
+        formatted_date = [int(i) for i in formatted_date.split('-')]
+        if i>12:
+            formatted_date[0] += 1
+            i=1
+        formatted_date[1] = month+i
+        if formatted_date[1] <10: formatted_date = f'{formatted_date[0]}-0{formatted_date[1]}-01'
+        else: formatted_date = f'{formatted_date[0]}-{formatted_date[1]}-01'
+        print(formatted_date , file=sys.stderr)
+        if data[data['extract_date'] == formatted_date].empty:
+            formatted_date = [int(i) for i in formatted_date.split('-')]
+            formatted_date[1] = month-2*i
+            if formatted_date[1] <10: formatted_date = f'{formatted_date[0]}-0{formatted_date[1]}-01'
+            else: formatted_date = formatted_date = f'{formatted_date[0]}-{formatted_date[1]}-01'
+            print(formatted_date , file=sys.stderr)
+        i += 1
+        
+        datecorrection = [i for i in formatted_date.split('-') if i]
+        #print(datecorrection , file=sys.stderr)
+
+    
 
     def calculate_elevation_in_range(row):
-        
         return sum(row[f'age_{i}'] if f'age_{i}' in row else 0 for i in range(start_age, end_age + 1))
     
     def interpolate_colour_r(elevation):
@@ -342,7 +367,7 @@ def map():
     fdata['green'] = fdata['elevation'].apply(interpolate_colour_g)
     
     # Pass processed data to template
-    return render_template('map.html', DATA=fdata.to_dict(orient='records'), start_age=start_age, end_age=end_age, max_elevation=max_elevation, min_elevation=min_elevation, scale=scale, selected_layer=selected_layer, message=message, radius=radius)
+    return render_template('map.html', DATA=fdata.to_dict(orient='records'), start_age=start_age, end_age=end_age, max_elevation=max_elevation, min_elevation=min_elevation, scale=scale, selected_layer=selected_layer, message=message, radius=radius,datecorrection = datecorrection)
 
 
 

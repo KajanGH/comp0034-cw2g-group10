@@ -215,10 +215,14 @@
             start_age: document.getElementById('start_age').value,
             end_age: document.getElementById('end_age').value,
             sex: document.querySelector('input[name="sex"]:checked').value,
-            year: document.getElementById('demo').value
+            yearslider: document.getElementById('year').value,
         };
         localStorage.setItem('formData', JSON.stringify(formData));
     }
+    var months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+  
+    const datecorrectionyear = "{{ datecorrection[0] }}"
+    const datecorrectionmonth = Number("{{ datecorrection[1] }}")-1
 
     // Function to retrieve and populate form data from local storage
     function populateFormData() {
@@ -228,8 +232,12 @@
             document.getElementById('start_age').value = storedFormData.start_age;
             document.getElementById('end_age').value = storedFormData.end_age;
             document.querySelector(`input[name="sex"][value="${storedFormData.sex}"]`).checked = true;
-            document.getElementById('year').value = storedFormData.year;
-            document.getElementById('demo').innerHTML = storedFormData.year;
+            document.getElementById('year').value = storedFormData.yearslider;
+            document.getElementById('demo').innerHTML = getMonthName(storedFormData.yearslider);
+            if (datecorrectionyear != ""){
+              document.getElementById('year').value = datecorrectionyear*12;
+              document.getElementById('demo').innerHTML = datecorrectionyear+" "+ months[datecorrectionmonth];
+            }
         }
     }
 
@@ -298,22 +306,30 @@
           window.location.href = "/settings";
         });
       }
-      var months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+
       function getMonthName(value) {
         var year = Math.floor(value / 12); // Calculate the year
         var monthIndex = value % 12; // Get the index of the month in the array
         var month = months[monthIndex]; // Get the month name
         return year + ' ' + month; // Concatenate year and month
       }
-
+      function formatDateString(dateArray) {
+        const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+        const year = dateArray[0];
+        const monthIndex = parseInt(dateArray[1]) - 1; // Subtract 1 because JavaScript uses 0-based index for months
+        const month = months[monthIndex];
+        
+        return year + ' ' + month;
+      }
       var slider = document.getElementById("year");
       var output = document.getElementById("demo");
-
-      output.innerHTML = getMonthName(24291);; // Display the default slider value
+      
       
       // Update the current slider value (each time you drag the slider handle)
       slider.oninput = function() {
       output.innerHTML = getMonthName(this.value);
+
+      
       }
 </script>
 <!-- Full page image -->
