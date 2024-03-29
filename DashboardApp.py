@@ -348,7 +348,7 @@ def map():
             if not fdata_filtered.empty:
                 # Remove rows
                 fdata = fdata[~fdata.index.isin(fdata_filtered.index)]
-                message = f"{remove_value} hidden"
+                message = f"{','.join([i for i in remove_values])} hidden"
             else:
                 # Set message if no rows are removed
                 message = f"Location {remove_value} not found in the {selected_layer}"
