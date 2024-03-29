@@ -222,7 +222,7 @@
     var months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
   
     const datecorrectionyear = "{{ datecorrection[0] }}"
-    const datecorrectionmonth = Number("{{ datecorrection[1] }}")-1
+    const datecorrectionmonth = Number("{{ datecorrection[1] }}")-1 // Subtract 1 because JavaScript uses 0-based index for months
 
     // Function to retrieve and populate form data from local storage
     function populateFormData() {
