@@ -12,8 +12,10 @@ body {
 
 :root {
   /* fonts */
-  --font-almarai: Almarai;
-  --font-montserrat: Montserrat;
+  --font-almarai: Almarai, sans-serif;
+  --font-montserrat: Montserrat, sans-serif;
+  --font-rubik: Rubik, sans-serif; 
+  
 
   /* font sizes */
   --font-size-11xl: 30px;

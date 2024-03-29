@@ -8,7 +8,7 @@
     <script src="https://api.mapbox.com/mapbox-gl-js/v1.12.0/mapbox-gl.js"></script>
     <link href="https://api.mapbox.com/mapbox-gl-js/v1.12.0/mapbox-gl.css" rel="stylesheet"/>
     <link rel="stylesheet" href="/static/global.css" />
-    <link rel="stylesheet" href="static\map.css" />
+    <link rel="stylesheet" href="static/map.css" />
 </head>
 
 <body>
@@ -93,7 +93,10 @@
           <input type="range" min="24168" max="24300" value = "24291" class="slider" id="year" name="year">
           <text class="smalltext">Value: <span id="demo"></span></text>
         </div>
-
+        <div class="text" id="removeForm">
+          <label for="remove">Remove:</label>
+          <input class="text" type="text" id="remove" name="remove">
+        </div>
         <button type="submit" class="log-in-container">
             <div class="log-in2">Submit</div>
         </button>
@@ -102,6 +105,11 @@
 
 
 <div id="tooltip"></div>
+
+<div id="message-container">
+  <p id="message" style="color: rgb(0, 0, 0);"></p>
+  
+</div>
 
 <script>
     document.getElementById('formData').addEventListener('submit', function(event) {
@@ -128,6 +136,7 @@
     const minElevation = {{ min_elevation }};
     const scale = {{ scale }};
     const selectedLayer = '{{ selected_layer }}';
+    const radius = {{ radius }};
 
 
     
@@ -164,7 +173,7 @@
                 id: 'column',
                 data: data,
                 diskResolution: 12,
-                radius: 1500,
+                radius: radius,
                 elevationScale: scale,
                 getPosition: (d) => [d.Longitude, d.Latitude],
                 getFillColor: (d) => [d.red, d.green, d.blue, 160],
@@ -222,6 +231,20 @@
             document.getElementById('year').value = storedFormData.year;
             document.getElementById('demo').innerHTML = storedFormData.year;
         }
+    }
+
+    // Function to set message
+    function setMessage(message) {
+        const messageElement = document.getElementById('message');
+        if (messageElement) {
+            messageElement.textContent = message;
+        }
+    }
+
+    // Check if message exists and display it
+    const message = "{{ message }}";
+    if (message) {
+        setMessage(message);
     }
 
     // Add event listener for form submission
@@ -295,7 +318,10 @@
 </script>
 <!-- Full page image -->
 <div class="full-page-image">
-  <img src="/static/public/mapbasepic.png" alt="" width="100%" height="100%">
+  <img src="/static/public/mapbasepic.png" alt="" width="100%" height="100%" >
+</div>
+<div class="background">
+  <img src="/static/public/greybg.png" alt="" width="100%" height="100%" >
 </div>
 
 

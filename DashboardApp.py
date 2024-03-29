@@ -220,6 +220,9 @@ def map():
     selected_layer = 'rgn'
     sexChoice = 'persons'
     year = 2020
+    remove_values = []
+    message = 'None Hidden'
+    radius = 1000
 
     if request.method == 'POST':
         if 'layer' in request.form.keys(): selected_layer = request.form.get('layer')
@@ -227,21 +230,22 @@ def map():
         if 'start_age' in request.form.keys() and request.form['start_age']: start_age = int(request.form.get('start_age'))
         if 'end_age' in request.form.keys() and request.form['end_age']: end_age = int(request.form.get('end_age'))
         if 'year' in request.form.keys() and request.form['year']: year = int(request.form.get('year'))
+        if 'remove' in request.form.keys() and request.form['remove']:
+            remove_values = request.form.get('remove').split('/')
 
     # Update data based on the selected layer
     if selected_layer == 'lad':
         data = lad_data
-        location = 1
+        radius = 1000
     elif selected_layer == 'itl':
         data = itl_data
-        location = 2
+        radius = 1500
     elif selected_layer == 'rgn':
         data = rgn_data
-        location = 3
+        radius = 3000
     else:
         # Handle invalid selection
         data = rgn_data
-        location = 3
 
     if year:
         formatted_date = f'{round(year/12)}-10-01'
@@ -305,11 +309,28 @@ def map():
         fdata = fdata[fdata['Region'] == 'London']
         if selected_layer == 'lad':
             fdata = fdata[fdata['ITL'] == fdata['ITL']]
-    #        fdata = fdata[fdata['LAD'] != ' ']
-    #if selected_layer == 'itl':
-    #    fdata = fdata[fdata['ITL'] != ' ']
-    #if selected_layer == 'rgn':
-    #    fdata = fdata[fdata['RGN'] != ' ']
+    
+    
+    for remove_value in remove_values:
+            if selected_layer == 'lad':
+                fdata_filtered = fdata[fdata['LAD'].str.contains(remove_value)]
+            elif selected_layer == 'itl':
+                fdata_filtered = fdata[fdata['ITL'].str.contains(remove_value)]
+            elif selected_layer == 'rgn':
+                fdata_filtered = fdata[fdata['Region'].str.contains(remove_value)]
+            
+            # Check if any rows are removed
+            if not fdata_filtered.empty:
+                # Remove rows
+                fdata = fdata[~fdata.index.isin(fdata_filtered.index)]
+                message = f"{remove_value} hidden"
+            else:
+                # Set message if no rows are removed
+                message = f"Location {remove_value} not found in the {selected_layer}"
+
+            
+
+    
 
     fdata['elevation'] = fdata.apply(calculate_elevation_in_range, axis=1)
 
@@ -321,7 +342,7 @@ def map():
     fdata['green'] = fdata['elevation'].apply(interpolate_colour_g)
     
     # Pass processed data to template
-    return render_template('map.html', DATA=fdata.to_dict(orient='records'), start_age=start_age, end_age=end_age, max_elevation=max_elevation, min_elevation=min_elevation, scale=scale, selected_layer=selected_layer)
+    return render_template('map.html', DATA=fdata.to_dict(orient='records'), start_age=start_age, end_age=end_age, max_elevation=max_elevation, min_elevation=min_elevation, scale=scale, selected_layer=selected_layer, message=message, radius=radius)
 
 
 

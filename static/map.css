@@ -10,6 +10,7 @@ body {
     height: 100%;
     z-index: 0; 
     overflow: hidden;
+    
 }
 #tooltip {
   position: absolute;
@@ -20,6 +21,54 @@ body {
   z-index: 1; 
   pointer-events: none;
 }
+/* CSS code for message container */
+#message-container {
+  position: fixed; /* Position the container */
+  top: 20px; /* Adjust the top position */
+  left: 50%; /* Center horizontally */
+  transform: translateX(-50%); /* Center horizontally */
+  width: 70%; /* Adjust the width as needed */
+  max-width: 400px; /* Set maximum width */
+  background-color: #cbd7c3; /* Background color */
+  border: 6px solid rgb(0, 0, 0); /* Border */
+  border-radius: 8px; /* Border radius */
+  padding: 10px; /* Padding */
+  text-align: center; /* Center text */
+  z-index: 9999; /* Ensure it appears above other elements */
+  animation: fadeOut 5s forwards;
+}
+
+/* CSS code for message text */
+#message {
+  margin: 0; /* Remove default margin */
+  color: rgb(0, 0, 0); /* Text color */
+  font-size: 28px; /* Font size */
+  font-family: var(--font-rubik); /* Use the Rubik font */
+}
+
+/* Fade-out animation */
+@keyframes fadeOut {
+  0% {
+    opacity: 1; /* Start with full opacity */
+  }
+  50% {
+    opacity: 1; /* Maintain full opacity for the first 5 seconds */
+  }
+  100% {
+    opacity: 0; /* Fade out to completely transparent */
+  }
+}
+
+/* Fade-out animation */
+@keyframes fadeIn {
+  from {
+    opacity: 0; /* Start with full opacity */
+  }
+  to {
+    opacity: 1; /* Fade out to completely transparent */
+  }
+}
+
 .ui-container {
     position: absolute;
     top: 100px;
@@ -168,14 +217,25 @@ body {
 }
 
 .full-page-image {
+
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  z-index: -1; /* Ensure the image stays at the bottom of the z-axis */
-  background-image: '/static/public/mapbasepic.png'; /* Specify the path to your image */
-  background-size: cover;
+  opacity: 1; /* Initially set opacity to 1 */
+  z-index: -1;
+  animation: fadeIn 4s forwards; /* Apply fade-out animation */
+}
+.background {
+
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 1; /* Initially set opacity to 1 */
+  z-index: -2;
 }
 
 .text-box {
