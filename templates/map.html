@@ -101,9 +101,11 @@
             <div class="log-in2">Submit</div>
         </button>
     </form>
+    <button class="button" id="toggleStatsBtn">Show stats</button>
 </div>
 
-<div class="stats-box">
+
+<div class="stats-box" style="display: none;">
   <div class="filters-wrapper">
       <b class="filters1">General Stats:</b>
     </div>
@@ -373,6 +375,19 @@
 
       
       }
+
+      // Show/hide stats box
+      document.getElementById('toggleStatsBtn').addEventListener('click', function() {
+          const statsBox = document.querySelector('.stats-box');
+          const btn = document.getElementById('toggleStatsBtn');
+          if (statsBox.style.display === 'none') {
+              statsBox.style.display = 'block';
+              btn.textContent = 'Hide stats';
+          } else {
+              statsBox.style.display = 'none';
+              btn.textContent = 'Show stats';
+          }
+      });
 </script>
 <!-- Full page image -->
 <div class="full-page-image">
