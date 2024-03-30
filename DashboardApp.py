@@ -4,7 +4,7 @@ import calendar
 import secrets
 from flask import Flask, render_template, request, session
 from collections import deque
-from helpers import encode_auth_token, token_required
+from helpers import encode_auth_token, token_required, trends_box
 from pathlib import Path
 from datetime import date
 import math
@@ -258,8 +258,8 @@ def map():
     else:
         formatted_date = '2020-10-01'
 
+    ###Date Correction: If the date is not in the dataset, the closest date is found
     i = 0
-    print(formatted_date , file=sys.stderr)
     while data[data['extract_date'] == formatted_date].empty:
         formatted_date = [int(i) for i in formatted_date.split('-')]
 
@@ -271,19 +271,13 @@ def map():
         formatted_date[1] = month+i
         if formatted_date[1] <10: formatted_date = f'{formatted_date[0]}-0{formatted_date[1]}-01'
         else: formatted_date = f'{formatted_date[0]}-{formatted_date[1]}-01'
-        print(formatted_date , file=sys.stderr)
         if data[data['extract_date'] == formatted_date].empty:
             formatted_date = [int(i) for i in formatted_date.split('-')]
             formatted_date[1] = month-i
             if formatted_date[1] <10: formatted_date = f'{formatted_date[0]}-0{formatted_date[1]}-01'
             else: formatted_date = f'{formatted_date[0]}-{formatted_date[1]}-01'
-            print(formatted_date , file=sys.stderr)
         i += 1
-        
         datecorrection = [i for i in formatted_date.split('-') if i]
-    print(datecorrection,i , file=sys.stderr)
-
-    
 
     def calculate_elevation_in_range(row):
         return sum(row[f'age_{i}'] if f'age_{i}' in row else 0 for i in range(start_age, end_age + 1))
@@ -371,8 +365,19 @@ def map():
     fdata['red'] = fdata['elevation'].apply(interpolate_colour_r)
     fdata['green'] = fdata['elevation'].apply(interpolate_colour_g)
     
+    trends = trends_box(sexChoice,formatted_date,selected_layer)
+    print(fdata)
+
+    age_columns = fdata.filter(like='age').columns
+
+    # Summing up values across age columns for each row
+    fdata['total_population'] = fdata[age_columns].sum(axis=1)
+
+    # Summing up the total population across all rows
+    pop = round(fdata['total_population'].sum())
+
     # Pass processed data to template
-    return render_template('map.html', DATA=fdata.to_dict(orient='records'), start_age=start_age, end_age=end_age, max_elevation=max_elevation, min_elevation=min_elevation, scale=scale, selected_layer=selected_layer, message=message, radius=radius,datecorrection = datecorrection)
+    return render_template('map.html', DATA=fdata.to_dict(orient='records'), start_age=start_age, end_age=end_age, max_elevation=max_elevation, min_elevation=min_elevation, scale=scale, selected_layer=selected_layer, message=message, radius=radius,datecorrection = datecorrection, trends = trends, pop = pop)
 
 
 
