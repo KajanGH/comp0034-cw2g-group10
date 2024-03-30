@@ -111,8 +111,9 @@
     </div>
           <u class="text">Total Population: </u><br>
           <text class="text">{{pop}}</text><br>
-          <u class="text">Largest changes in the last year: </u><br>
-        <div class="cities">
+        <div class = "hide" style="display: block">
+          <u class="text">Largest changes in the last year: </u>
+          <div class="cities">
           <div class="section">
             <text class="text"> 1. {{trends[0][0]}} </text>
             <text class="text">↑ {{trends[0][1]}}%</text>
@@ -137,6 +138,7 @@
             <text class="text"> 6. {{trends[5][0]}} </text>
             <text class="text">↑ {{trends[5][1]}}%</text>
           </div>
+        </div>
         </div>
 </div>
 
@@ -372,10 +374,20 @@
       // Update the current slider value (each time you drag the slider handle)
       slider.oninput = function() {
       output.innerHTML = getMonthName(this.value);
-
-      
       }
 
+      // Add event listener for when the DOM content is loaded
+      document.addEventListener('DOMContentLoaded', function() {
+          // Check if the condition is met
+          if (isNaN(parseFloat('{{trends[0][1]}}'))) {
+              // If the condition is met, hide the sections with class "hide"
+              const hideSections = document.querySelectorAll('.hide');
+              hideSections.forEach(section => {
+                  section.style.display = 'none';
+              });
+          }
+      });
+    
       // Show/hide stats box
       document.getElementById('toggleStatsBtn').addEventListener('click', function() {
           const statsBox = document.querySelector('.stats-box');
@@ -388,6 +400,8 @@
               btn.textContent = 'Show stats';
           }
       });
+      
+
 </script>
 <!-- Full page image -->
 <div class="full-page-image">
