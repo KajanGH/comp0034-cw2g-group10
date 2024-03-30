@@ -235,7 +235,7 @@
             document.getElementById('year').value = storedFormData.yearslider;
             document.getElementById('demo').innerHTML = getMonthName(storedFormData.yearslider);
             if (datecorrectionyear != ""){
-              document.getElementById('year').value = datecorrectionyear*12;
+              document.getElementById('year').value = datecorrectionyear*(12/datacorrectionmonth);
               document.getElementById('demo').innerHTML = datecorrectionyear+" "+ months[datecorrectionmonth];
             }
         }
