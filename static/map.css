@@ -154,7 +154,7 @@ body {
   cursor: pointer;
   border: 0;
   padding: var(--padding-5xs) var(--padding-109xl);
-  background-color: var(--color-teal);
+  background-color: #04AA6D;
   border-radius: var(--br-5xl);
   overflow: hidden;
   display: flex;
@@ -166,6 +166,7 @@ body {
   font-weight: var(--font-weight-regular);
   font-family: Arial, Helvetica, sans-serif;
   color: var(--color-white);
+  margin-top: 30px;
 }
 .log-in-container:hover {
   background-color: var(--color-cadetblue);
@@ -276,4 +277,29 @@ body {
   align-items: center;
   justify-content: center;
   gap: 30px;
+}
+.button {
+  background-color: #04AA6D; /* Green */
+  border: none;
+  color: white;
+  padding: 4px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  transition-duration: 0.4s;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+.button1 {
+  background-color: white; 
+  color: black; 
+  border: 2px solid #04AA6D;
+}
+
+.button1:hover {
+  background-color: #04AA6D;
+  color: white;
 }
