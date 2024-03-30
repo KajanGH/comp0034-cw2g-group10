@@ -103,6 +103,46 @@
     </form>
 </div>
 
+<div class="stats-box">
+  <div class="filters-wrapper">
+      <b class="filters1">General Stats:</b>
+    </div>
+          <u class="text">Total Population: </u><br>
+          <text class="text">6000000</text><br>
+          <u class="text">Population Distribution: </u><br>
+        <div class="cities">
+          <div class="section">
+            <text class="text"> 1. </text>
+            <text class="text"> Bristol </text>
+            <text class="text">^12%</text>
+          </div>
+          <div class="section">
+            <text class="text"> 2. </text>
+            <text class="text"> Camden </text>
+            <text class="text">v11%</text>
+          </div>
+          <div class="section">
+            <text class="text"> 3. </text>
+            <text class="text"> Bath </text>
+            <text class="text">v 8%</text>
+          </div>
+          <div class="section">
+            <text class="text"> 4. </text>
+            <text class="text"> Dartford </text>
+            <text class="text">^ 7%</text>
+          </div>
+          <div class="section">
+            <text class="text"> 5. </text>
+            <text class="text"> Kirklees </text>
+            <text class="text">v 7%</text>
+          </div>
+          <div class="section">
+            <text class="text"> 6. </text>
+            <text class="text"> Leeds </text>
+            <text class="text">v 8%</text>
+          </div>
+        </div>
+</div>
 
 <div id="tooltip"></div>
 
@@ -210,34 +250,42 @@
 
     // Function to store form data in local storage
     function storeFormData() {
-        const formData = {
+        var formData = {
             layer: document.querySelector('input[name="layer"]:checked').value,
             start_age: document.getElementById('start_age').value,
             end_age: document.getElementById('end_age').value,
             sex: document.querySelector('input[name="sex"]:checked').value,
             yearslider: document.getElementById('year').value,
+            value: document.getElementById('demo').innerHTML,
         };
+        
         localStorage.setItem('formData', JSON.stringify(formData));
     }
     var months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
   
+
     const datecorrectionyear = "{{ datecorrection[0] }}"
     const datecorrectionmonth = Number("{{ datecorrection[1] }}")-1 // Subtract 1 because JavaScript uses 0-based index for months
+    
 
     // Function to retrieve and populate form data from local storage
     function populateFormData() {
-        const storedFormData = JSON.parse(localStorage.getItem('formData'));
+      var storedFormData = JSON.parse(localStorage.getItem('formData'));
+      if ('{{ datecorrection }}' != '') {
+        formData.yearslider = datecorrectionyear*12+datecorrectionmonth
+        formData.value = datecorrectionyear+" "+ months[datecorrectionmonth]
+      }
+      else {
+        formData.yearslider = storedFormData.yearslider;
+        formData.value = storedFormData.value;
+      }
         if (storedFormData) {
             document.querySelector(`input[name="layer"][value="${storedFormData.layer}"]`).checked = true;
             document.getElementById('start_age').value = storedFormData.start_age;
             document.getElementById('end_age').value = storedFormData.end_age;
             document.querySelector(`input[name="sex"][value="${storedFormData.sex}"]`).checked = true;
-            document.getElementById('year').value = storedFormData.yearslider;
-            document.getElementById('demo').innerHTML = getMonthName(storedFormData.yearslider);
-            if (datecorrectionyear != ""){
-              document.getElementById('year').value = datecorrectionyear*(12/datacorrectionmonth);
-              document.getElementById('demo').innerHTML = datecorrectionyear+" "+ months[datecorrectionmonth];
-            }
+            document.getElementById('year').value = formData.yearslider;
+            document.getElementById('demo').innerHTML = formData.value;
         }
     }
 

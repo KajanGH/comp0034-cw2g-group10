@@ -7,6 +7,7 @@ from collections import deque
 from helpers import encode_auth_token, token_required
 from pathlib import Path
 from datetime import date
+import math
 import sys
 import os
 
@@ -252,31 +253,35 @@ def map():
         data = rgn_data
   
     if 'year' in request.form.keys():
-        formatted_date = f'{round(year/12)}-{month}-01'
+        if month < 10: formatted_date = f'{math.floor(year/12)}-0{month}-01'
+        else: formatted_date = f'{math.floor(year/12)}-{month}-01'
     else:
         formatted_date = '2020-10-01'
 
     i = 0
-
+    print(formatted_date , file=sys.stderr)
     while data[data['extract_date'] == formatted_date].empty:
         formatted_date = [int(i) for i in formatted_date.split('-')]
-        if i>12:
-            formatted_date[0] += 1
-            i=1
+
+        if month> 12:
+                formatted_date[0] += 1
+                month -= 11
+                i= 1
+
         formatted_date[1] = month+i
         if formatted_date[1] <10: formatted_date = f'{formatted_date[0]}-0{formatted_date[1]}-01'
         else: formatted_date = f'{formatted_date[0]}-{formatted_date[1]}-01'
         print(formatted_date , file=sys.stderr)
         if data[data['extract_date'] == formatted_date].empty:
             formatted_date = [int(i) for i in formatted_date.split('-')]
-            formatted_date[1] = month-2*i
+            formatted_date[1] = month-i
             if formatted_date[1] <10: formatted_date = f'{formatted_date[0]}-0{formatted_date[1]}-01'
-            else: formatted_date = formatted_date = f'{formatted_date[0]}-{formatted_date[1]}-01'
+            else: formatted_date = f'{formatted_date[0]}-{formatted_date[1]}-01'
             print(formatted_date , file=sys.stderr)
         i += 1
         
         datecorrection = [i for i in formatted_date.split('-') if i]
-        #print(datecorrection , file=sys.stderr)
+    print(datecorrection,i , file=sys.stderr)
 
     
 
