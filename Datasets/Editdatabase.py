@@ -211,6 +211,6 @@ def transform_and_round_forecast_data_CTRY(forecast_path, original_data_path, ou
 
 
 transformed_data_CTRY = transform_and_round_forecast_data_CTRY('/Users/omeryurttutmus/Desktop/forecast_ctry.csv',"/Users/omeryurttutmus/Desktop/prepared_ctry.csv",'/Users/omeryurttutmus/Desktop/combined_forecast_ctry_sex_age_group.csv')
-#transformed_data_region = transform_and_round_forecast_data_region('/Users/omeryurttutmus/Desktop/forecast_Region_sex_age_group.csv', "/Users/omeryurttutmus/Desktop/prepared_rgn.csv",'/Users/omeryurttutmus/Desktop/combined_forecast_Region_sex_age_group.csv')
-#transformed_data_ITL = transform_and_round_forecast_data_ITL('/Users/omeryurttutmus/Desktop/forecast_ITL_sex_age_group.csv', "/Users/omeryurttutmus/Desktop/prepared_itl.csv",'/Users/omeryurttutmus/Desktop/combined_forecast_ITL_sex_age_group.csv')
-#transformed_data_LAD = transform_and_round_forecast_data_LAD('/Users/omeryurttutmus/Desktop/forecast_lad_sex_age_group-1.csv', "/Users/omeryurttutmus/Desktop/prepared_lad.csv",'/Users/omeryurttutmus/Desktop/combined_forecast_LAD_sex_age_group.csv')
+transformed_data_region = transform_and_round_forecast_data_region('/Users/omeryurttutmus/Desktop/forecast_Region_sex_age_group.csv', "/Users/omeryurttutmus/Desktop/prepared_rgn.csv",'/Users/omeryurttutmus/Desktop/combined_forecast_Region_sex_age_group.csv')
+transformed_data_ITL = transform_and_round_forecast_data_ITL('/Users/omeryurttutmus/Desktop/forecast_ITL_sex_age_group.csv', "/Users/omeryurttutmus/Desktop/prepared_itl.csv",'/Users/omeryurttutmus/Desktop/combined_forecast_ITL_sex_age_group.csv')
+transformed_data_LAD = transform_and_round_forecast_data_LAD('/Users/omeryurttutmus/Desktop/forecast_lad_sex_age_group-1.csv', "/Users/omeryurttutmus/Desktop/prepared_lad.csv",'/Users/omeryurttutmus/Desktop/combined_forecast_LAD_sex_age_group.csv')
