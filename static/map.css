@@ -42,7 +42,7 @@ body {
 #message {
   margin: 0; /* Remove default margin */
   color: rgb(0, 0, 0); /* Text color */
-  font-size: 28px; /* Font size */
+  font-size: 20px; /* Font size */
   font-family: var(--font-rubik); /* Use the Rubik font */
 }
 
@@ -78,7 +78,7 @@ body {
     border-radius: 5px;
     z-index: 1; 
     font-family: Helvetica;
-    font-size: var(--font-size-13xl);
+    font-size: 16px;
     font-weight: var(--font-weight-regular);
 }
 .stats-box {
@@ -90,7 +90,7 @@ body {
   border-radius: 5px;
   z-index: 1; 
   font-family: Helvetica;
-  font-size: var(--font-size-13xl);
+  font-size: 16px;
   font-weight: var(--font-weight-regular);
 }
 .camera-icon5,
@@ -112,8 +112,7 @@ body {
   height: 44.4px;
 }
 .sidebar-frame5,
-.user-icon-parent3,
-.world-icon-parent3 {
+.user-icon-parent3 {
   overflow: hidden;
   display: flex;
   flex-direction: column;
@@ -122,14 +121,38 @@ body {
   gap: var(--gap-73xl);
 
 }
+.world-icon-parent3 {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  left: 0;
+  right: 0; /* Ensure icons are horizontally centered */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: calc(10vh * 0.5); /* 10% of viewport height */
+}
 .sidebar-frame5,
 .user-icon-parent3 {
   gap: var(--gap-5xl);
 }
+
+.user-icon-parent3 {
+  position: absolute;
+  bottom: calc(5vh + 10px); /* 5% of viewport height + additional spacing */
+  left: 0;
+  right: 0; /* Ensure icons are horizontally centered */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 .sidebar-frame5 {
+  height: 100vh;
   align-self: normal;
   justify-content: flex-start;
-  gap: 175px;
+  gap: 10%;
   z-index: 1;
   position: absolute;
   top: 0.1px;
@@ -286,7 +309,7 @@ body {
   text-align: center;
   text-decoration: none;
   display: inline-block;
-  font-size: 16px;
+  font-size: 12px;
   margin: 4px 2px;
   transition-duration: 0.4s;
   cursor: pointer;
