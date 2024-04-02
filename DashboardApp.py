@@ -40,7 +40,7 @@ snapshots = deque([0,1,2,3,4,5,6,7,8],maxlen=9)
 def analytics():
     save = True
     snapshotdata = pd.read_csv('static/snapshot/snapshotdata.csv')
-    trenddate = "2023-10-01"
+    trenddate = False
     trendsex = "persons"
     if len(snapshotdata) == 10: snapshotdata = snapshotdata.drop(snapshotdata.index[0])
     form = ""
@@ -184,20 +184,23 @@ def analytics():
         plt.savefig('static/public/graph5.png')
 
         # Call trends_box function and plot bar chart for top increases
-        trends_data = trends_box(trendsex, trenddate,'lad') # Adjust the selected_layer parameter accordingly
-        df_trends = pd.DataFrame(trends_data, columns=['lad', 'change'])
-
         plt.figure(figsize=(10, 6))
-        bars = plt.bar(df_trends['lad'], df_trends['change'], color='skyblue')
         plt.xlabel('Geographic Area')
         plt.ylabel('Percentage Change')
         plt.title('Top Increases in the last year')
         plt.xticks(rotation=45, ha='right')
         plt.tight_layout()
-        for bar in bars:
-            height = bar.get_height()
-            plt.text(bar.get_x() + bar.get_width() / 2, height, height, ha='center', va='bottom')
-        plt.savefig('static/public/graph6.png')
+        if trenddate:
+            trends_data = trends_box(trendsex, trenddate,'lad') # Adjust the selected_layer parameter accordingly
+            df_trends = pd.DataFrame(trends_data, columns=['lad', 'change'])
+            bars = plt.bar(df_trends['lad'], df_trends['change'], color='skyblue')
+            for bar in bars:
+                height = bar.get_height()
+                plt.text(bar.get_x() + bar.get_width() / 2, height, height, ha='center', va='bottom')
+            plt.savefig('static/public/graph6.png')
+        else:
+            plt.bar([""],[0])
+            plt.savefig('static/public/graph6.png')
 
         search.append(form)
 
