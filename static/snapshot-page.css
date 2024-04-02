@@ -1,96 +1,24 @@
-.additional-info,
-.date-saved {
-  position: absolute;
-  top: calc(50% + 95.5px);
-  left: calc(50% - 243.5px);
-  display: inline-block;
-  width: auto;
-  height: auto;
-}
-.additional-info {
-  top: calc(50% + 137.5px);
-}
-.saved-image-child {
-  position: absolute;
-  top: 22px;
-  left: 23px;
-  background-color: var(--color-gainsboro-100);
-  width: 488px;
-  height: 254px;
-  object-fit: fill;
-}
-.saved-graph {
-  position: absolute;
-  top: calc(50% - 79.5px);
-  left: calc(50% - 147.5px);
-  font-size: var(--font-size-21xl);
-  display: inline-block;
-  width: 296px;
-  height: 55px;
-}
-.saved-image {
-  width: 533px;
-  position: relative;
-  background-color: var(--color-gray-100);
-  height: 401px;
-  overflow: hidden;
-  flex-shrink: 0;
-}
-.frame2,
-.frame3,
-.frame4,
-.frame5 {
-  width: 533px;
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: flex-start;
-}
-.frame3 {
-  height: 843px;
-  flex-shrink: 0;
-  gap: var(--gap-22xl);
-}
-.frame2,
-.frame4,
-.frame5 {
-  position: absolute;
-  top: 29px;
-  height: 1291px;
-}
-.frame2 {
-  left: 193px;
-  gap: 47px;
-}
-.frame4,
-.frame5 {
-  left: 769px;
-  gap: var(--gap-22xl);
-}
-.frame5 {
-  left: 1345px;
-}
-.camera-icon7,
-.logo-icon7,
-.world-icon7 {
+body { background-color:var(--color-beige); }
+
+.camera-icon9,
+.logo-icon9,
+.world-icon9 {
   width: 138px;
   position: relative;
   height: 109px;
   object-fit: cover;
   cursor: pointer;
+  z-index: 2;
 }
-.camera-icon7,
-.world-icon7 {
+.camera-icon9,
+.world-icon9 {
   width: 50px;
   height: 50px;
 }
-.camera-icon7 {
+.camera-icon9 { 
   height: 44.4px;
 }
-.sidebar-frame7,
-.user-icon-parent5,
-.world-icon-parent5 {
+.user-icon-parent7 {
   overflow: hidden;
   display: flex;
   flex-direction: column;
@@ -98,27 +26,103 @@
   justify-content: center;
   gap: var(--gap-73xl);
 }
-.sidebar-frame7,
-.user-icon-parent5 {
+.user-icon-parent7 {
   gap: var(--gap-5xl);
-}
-.sidebar-frame7 {
   position: absolute;
-  top: 0;
+  bottom: calc(5vh + 10px); /* 5% of viewport height + additional spacing */
+  left: 0;
+  right: 0; /* Ensure icons are horizontally centered */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.world-icon-parent7 {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  left: 0;
+  right: 0; /* Ensure icons are horizontally centered */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: calc(10vh * 0.5); /* 10% of viewport height */
+}
+
+.sidebar-frame9 {
+  height: 100vh;
+  align-self: normal;
+  justify-content: flex-start;
+  gap: 10%;
+  z-index: 1;
+  position: fixed;
+  top: 0.1px;
+  left: 0.1px;
+}
+.sidebar-frame9 {
   left: 0;
   background-color: var(--color-ivory-100);
-  height: 1349px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   justify-content: flex-start;
   gap: var(--gap-208xl);
 }
-.snapshot-page {
-  width: 100%;
-  position: relative;
-  background-color: var(--color-beige);
-  height: 1349px;
-  overflow: hidden;
-  text-align: center;
-  font-size: var(--font-size-11xl);
-  color: var(--color-black);
-  font-family: var(--font-almarai);
+.snapshot-page{
+    margin-left: 150px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding: 20px;
+    font-size: 16px;
+    color: var(--color-black);
+    font-family: var(--font-almarai);
 }
+
+.saved-image {
+    width: 55vh;
+    position: relative;
+    height: auto;
+    overflow: hidden;
+    flex-shrink: 0;
+  }
+  .imgframe {
+    display: flex;
+    flex-direction: column;
+    align-items: left; /* Align items horizontally at the center */
+    padding: 2vh;
+    gap:2vh;
+    background-color: var(--color-gray-100);
+    }
+
+  .horizontalframe{
+    display: flex;
+    flex-direction: row;
+    gap: 2vh;
+  }
+  .overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    display: none;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .overlay saved-image {
+    max-width: 75%;
+    max-height: 75%;
+  }
+  
+  .close {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    color: #fff;
+    cursor: pointer;
+    font-size: 24px;
+    z-index: 1000;
+  }
