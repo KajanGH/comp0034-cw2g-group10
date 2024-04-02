@@ -440,3 +440,9 @@
   font-size: 24px;
   z-index: 1000;
 }
+.image-with-button{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap:2vh;
+}

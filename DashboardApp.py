@@ -8,6 +8,7 @@ from helpers import encode_auth_token, token_required, trends_box
 from pathlib import Path
 from datetime import date
 from textwrap import wrap
+import shutil
 import math
 import sys
 import os
@@ -44,13 +45,24 @@ snapshots = deque([0,1,2,3,4,5,6,7,8],maxlen=9)
 @app.route('/analytics', methods=['GET', 'POST'])
 #@token_required
 def analytics():
-    save = True
     snapshotdata = pd.read_csv('static/snapshot/snapshotdata.csv')
     trenddate = False
     trendsex = "persons"
-    if len(snapshotdata) == 10: snapshotdata = snapshotdata.drop(snapshotdata.index[0])
     form = ""
     if request.method == 'POST':
+        for i in range(1, 7):
+            button_name = f'heart_button_{i}'
+            if button_name in request.form:
+                if len(snapshotdata) == 10: snapshotdata = snapshotdata.drop(snapshotdata.index[0])
+                snapshotdata.at[snapshots[0],"form"] = search[-1]
+                snapshotdata.at[snapshots[0],"date"] = date.today()
+                if os.path.exists(f'static/snapshot/graph{snapshots[0]}.png'): os.remove(f'static/snapshot/graph{snapshots[0]}.png')
+                shutil.copy(f'static/public/graph{i}.png', f'static/snapshot/graph{snapshots[0]}.png')
+                snapshotdata.at[snapshots[0],"img"] = f'static/snapshot/graph{snapshots[0]}.png'
+                snapshots.append(snapshots[0])
+                snapshotdata.to_csv('static/snapshot/snapshotdata.csv',index=False)
+                return render_template('analytics-page.html', DataToRender=search)
+            
         df = pd.read_csv('dataset/prepared_lad.csv',  usecols=lambda col: 'age' in col or col in ['Region','ITL','LAD', 'extract_date', 'sex'])
         for index,row in df.iterrows():
             df.at[index, 'year'] = int(row['extract_date'].split('-')[0])
@@ -97,13 +109,6 @@ def analytics():
             plt.annotate('%.0f' % txt, (age_sum_by_year.index[i], age_sum_by_year.values[i]), textcoords="offset points", xytext=(0,10), ha='center')
         plt.tight_layout()
         plt.savefig('static/public/graph1.png')
-        if save: 
-            snapshotdata.at[snapshots[0],"form"] = form
-            snapshotdata.at[snapshots[0],"date"] = date.today()
-            if os.path.exists(f'static/snapshot/graph{snapshots[0]}.png'): os.remove(f'static/snapshot/graph{snapshots[0]}.png')
-            plt.savefig(f'static/snapshot/graph{snapshots[0]}.png')
-            snapshotdata.at[snapshots[0],"img"] = f'static/snapshot/graph{snapshots[0]}.png'
-            snapshots.append(snapshots[0])
             
 
         ####AGE DISTRIBUTION GRAPH####
@@ -127,13 +132,6 @@ def analytics():
                             textcoords="offset points",
                             ha='center', va='bottom')
         plt.savefig('static/public/graph2.png')
-        if save:
-            snapshotdata.at[snapshots[0],"form"] = form
-            snapshotdata.at[snapshots[0],"date"] = date.today()
-            if os.path.exists(f'static/snapshot/graph{snapshots[0]}.png'): os.remove(f'static/snapshot/graph{snapshots[0]}.png')
-            plt.savefig(f'static/snapshot/graph{snapshots[0]}.png')
-            snapshotdata.at[snapshots[0],"img"] = f'static/snapshot/graph{snapshots[0]}.png'
-            snapshots.append(snapshots[0])
 
         ###SEX PIE CHART###
         sex_age_counts = df[df['sex'] != 'persons'].groupby('sex')[age_columns].sum()
@@ -210,7 +208,6 @@ def analytics():
 
         search.append(form)
 
-        if save: snapshotdata.to_csv('static/snapshot/snapshotdata.csv',index=False)
     return render_template('analytics-page.html', DataToRender=search)
 
 @app.route('/snapshot')
@@ -412,7 +409,6 @@ def map():
     fdata['green'] = fdata['elevation'].apply(interpolate_colour_g)
     
     trends = trends_box(sexChoice,formatted_date,selected_layer)
-    print(fdata)
 
     age_columns = fdata.filter(like='age').columns
 
