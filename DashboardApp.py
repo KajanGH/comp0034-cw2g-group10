@@ -131,7 +131,7 @@ def analytics():
         total_people_per_sex = sex_age_counts.sum(axis=1)
 
         # Plotting
-        plt.figure(figsize=(8, 8))
+        plt.figure(figsize=(10, 6))
         plt.pie(total_people_per_sex, labels=total_people_per_sex.index, autopct='%1.1f%%', startangle=140, textprops={'fontsize': 30})
         plt.title('Sex Makeup', fontsize=60)
         plt.axis('equal')
@@ -145,7 +145,7 @@ def analytics():
         total_people_per_location = location_age_counts.sum(axis=1)
 
         # Plotting
-        plt.figure(figsize=(8, 8))
+        plt.figure(figsize=(10, 6))
         plt.pie(total_people_per_location, labels=total_people_per_location.index, autopct='%1.1f%%', startangle=140, textprops={'fontsize': 30})
         plt.title('ITL Ratio',fontsize=60)
         plt.axis('equal')
@@ -155,7 +155,7 @@ def analytics():
         ###MONTH PIE CHART###
         month_counts = df['month'].value_counts()
         # Plotting
-        plt.figure(figsize=(8, 8))
+        plt.figure(figsize=(10, 6))
         plt.pie(month_counts, labels=month_counts.index, autopct='%1.1f%%', startangle=140,textprops={'fontsize': 25})
         plt.title('Month Ratio',fontsize=60)
         plt.axis('equal')

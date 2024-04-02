@@ -64,24 +64,23 @@
           />
         </div>
       </div>
-      <div class="analytics-page-child"></div>
+      <div class="bigframe">
       <div class="frame-parent14">
-        <div class="frame-parent15">
           <div class="table-wrapper">
             <img class="img" alt="" src="static\public\graph1.png" id="tableTest" />
-          </div>
-          <div class="table-container">
             <img class="img" alt="" src="static\public\graph2.png" id="tableTest" />
           </div>
-        </div>
+          <div class="table-wrapper">
+            <img class="img" alt="" src="static\public\graph3.png" id="tableTest" />
+            <img class="img" alt="" src="static\public\graph4.png" id="tableTest" />
+          </div>
+          <div class="table-wrapper">
+            <img class="img" alt="" src="static\public\graph1.png" id="tableTest" />
+            <img class="img" alt="" src="static\public\graph2.png" id="tableTest" />
+          </div>
       </div>
       <div class="frame-parent16">
         <div class="rectangle-group">
-          <div class="frame-child6"></div>
-          <img class="img2" alt="" src="static\public\graph3.png" id="tableTest" />
-          <img class="img2" alt="" src="static\public\graph4.png" id="tableTest" />
-          <img class="img2" alt="" src="static\public\graph5.png" id="tableTest" />
-        </div>
         <div class="frame-wrapper1">
           <div class="frame-parent17">
             <div class="frame-parent18">
@@ -118,7 +117,7 @@
               <div class="location-parent">
                 <div class="year">Sex:</div>
                 <input class = "month-child" type="text" name="sex" id="sex" placeholder="Enter Sex...">
-              </div>
+              </div> 
               <button type="submit">Search</button>
             </form>
             </div>
@@ -140,9 +139,31 @@
         </div>
       </div>
     </div>
+    </div>
+    <div class="overlay" id="overlay">
+      <span class="close">&times;</span>
+      <img id="overlayImg" src="" alt="">
+    </div>
 
     <script>
-      
+      var images = document.querySelectorAll('.img');
+    images.forEach(function(img) {
+      img.addEventListener('click', function() {
+        var overlay = document.getElementById('overlay');
+        var overlayImg = document.getElementById('overlayImg');
+
+        overlay.style.display = 'flex';
+        overlayImg.src = this.src;
+      });
+    });
+
+    // Add click event listener to close button
+    var closeBtn = document.querySelector('.close');
+    closeBtn.addEventListener('click', function() {
+      var overlay = document.getElementById('overlay');
+      overlay.style.display = 'none';
+    });
+    
       var logoImage = document.getElementById("logoImage");
       if (logoImage) {
         logoImage.addEventListener("click", function (e) {
