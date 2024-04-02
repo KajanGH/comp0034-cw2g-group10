@@ -177,23 +177,30 @@
 
     <script>
       var images = document.querySelectorAll('.img');
-    images.forEach(function(img) {
-      img.addEventListener('click', function() {
-        var overlay = document.getElementById('overlay');
-        var overlayImg = document.getElementById('overlayImg');
-
-        overlay.style.display = 'flex';
-        overlayImg.src = this.src;
-      });
-    });
-
-    // Add click event listener to close button
-    var closeBtn = document.querySelector('.close');
-    closeBtn.addEventListener('click', function() {
-      var overlay = document.getElementById('overlay');
-      overlay.style.display = 'none';
-    });
+      images.forEach(function(img) {
+        img.addEventListener('error', function() {
+          var button = this.nextElementSibling.querySelector('button');
+          if (button) {
+            button.style.display = 'none';
+          }
+        });
     
+        img.addEventListener('click', function() {
+          var overlay = document.getElementById('overlay');
+          var overlayImg = document.getElementById('overlayImg');
+    
+          overlay.style.display = 'flex';
+          overlayImg.src = this.src;
+        });
+      });
+    
+      // Add click event listener to close button
+      var closeBtn = document.querySelector('.close');
+      closeBtn.addEventListener('click', function() {
+        var overlay = document.getElementById('overlay');
+        overlay.style.display = 'none';
+      });
+      
       var logoImage = document.getElementById("logoImage");
       if (logoImage) {
         logoImage.addEventListener("click", function (e) {
@@ -235,12 +242,13 @@
           window.location.href = "/settings";
         });
       }
+      
       $('form#searchForm').submit(function() {
-            $(':input', this).each(function() {
-                this.disabled = !($(this).val());
-            });
+        $(':input', this).each(function() {
+          this.disabled = !($(this).val());
         });
-
-      </script>
+      });
+    </script>
+    
   </body>
 </html>
