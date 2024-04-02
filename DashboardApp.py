@@ -7,6 +7,7 @@ from collections import deque
 from helpers import encode_auth_token, token_required, trends_box
 from pathlib import Path
 from datetime import date
+from textwrap import wrap
 import math
 import sys
 import os
@@ -133,7 +134,7 @@ def analytics():
         # Plotting
         plt.figure(figsize=(10, 6))
         plt.pie(total_people_per_sex, labels=total_people_per_sex.index, autopct='%1.1f%%', startangle=140, textprops={'fontsize': 30})
-        plt.title('Sex Makeup', fontsize=60)
+        plt.title('Sex Distribution', fontsize=60)
         plt.axis('equal')
         plt.tight_layout()
         plt.savefig('static/public/graph3.png')
@@ -143,11 +144,12 @@ def analytics():
 
         # Calculate the total number of people per sex
         total_people_per_location = location_age_counts.sum(axis=1)
+        labels = [ '\n'.join(wrap(l, 15)) for l in total_people_per_location.index ] 
 
         # Plotting
         plt.figure(figsize=(10, 6))
-        plt.pie(total_people_per_location, labels=total_people_per_location.index, autopct='%1.1f%%', startangle=140, textprops={'fontsize': 30})
-        plt.title('ITL Ratio',fontsize=60)
+        plt.pie(total_people_per_location, labels=labels, autopct='%1.1f%%', startangle=140, textprops={'fontsize': 30})
+        plt.title('ITL Distribution',fontsize=60)
         plt.axis('equal')
         plt.tight_layout()
         plt.savefig('static/public/graph4.png')
