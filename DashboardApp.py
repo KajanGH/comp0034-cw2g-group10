@@ -39,11 +39,13 @@ snapshots = deque([0,1,2,3,4,5,6,7,8],maxlen=9)
 #@token_required
 def analytics():
     save = True
-    snapshotdata = pd.read_csv('static\snapshot\snapshotdata.csv')
+    snapshotdata = pd.read_csv('static/snapshot/snapshotdata.csv')
+    trenddate = "2023-10-01"
+    trendsex = "persons"
     if len(snapshotdata) == 10: snapshotdata = snapshotdata.drop(snapshotdata.index[0])
     form = ""
     if request.method == 'POST':
-        df = pd.read_csv('dataset/prepared_itl.csv',  usecols=lambda col: 'age' in col or col in ['Region','ITL', 'extract_date', 'sex'])
+        df = pd.read_csv('dataset/prepared_lad.csv',  usecols=lambda col: 'age' in col or col in ['Region','ITL','LAD', 'extract_date', 'sex'])
         for index,row in df.iterrows():
             df.at[index, 'year'] = int(row['extract_date'].split('-')[0])
             df.at[index, 'month'] = calendar.month_name[int(row['extract_date'].split('-')[1])]
@@ -53,6 +55,7 @@ def analytics():
         if 'sex' in request.form.keys():
             df = df[df['sex'] == request.form['sex'].lower()]
             form += " " + request.form['sex']
+            trendsex = request.form['sex']
         if 'low-age' in request.form.keys() and int(request.form['low-age'])>0: low_age = int(request.form['low-age'])
         else: low_age = 0
         if 'high-age' in request.form.keys() and int(request.form['high-age'])<95: high_age = int(request.form['high-age'])
@@ -64,10 +67,11 @@ def analytics():
         if 'year' in request.form.keys():
             df = df[df['extract_date'].str.contains(request.form['year'])]
             form += " " + request.form['year']
+            trenddate = f"{request.form['year']}-10-01"
         df.to_excel('static/public/filtered_data.xlsx')
 
         age_cols_to_keep = [f'age_{i}' for i in range(low_age, high_age + 1)]
-        df = df[['Region','ITL', 'sex', 'year', 'month'] + age_cols_to_keep]
+        df = df[['Region','ITL', 'LAD' ,'sex', 'year', 'month'] + age_cols_to_keep]
         ####AGE AGAINST YEARS GRAPH####
         # Calculate sum of each age range row
         age_columns = [col for col in df.columns if col.startswith('age_')]
@@ -79,13 +83,12 @@ def analytics():
         # Plotting
         plt.figure(figsize=(10, 6))
         plt.plot(age_sum_by_year.index, age_sum_by_year.values, marker='o', linestyle='-')
-        plt.title('Total People Over Years')
+        plt.title('Total People Over Years',fontsize=16)
         plt.xlabel('Year')
         plt.ylabel('Total Age Sum')
-        plt.grid(True)
         plt.xticks(age_sum_by_year.index)
         for i, txt in enumerate(age_sum_by_year.values):
-            plt.annotate(txt, (age_sum_by_year.index[i], age_sum_by_year.values[i]), textcoords="offset points", xytext=(0,10), ha='center')
+            plt.annotate('%.0f' % txt, (age_sum_by_year.index[i], age_sum_by_year.values[i]), textcoords="offset points", xytext=(0,10), ha='center')
         plt.tight_layout()
         plt.savefig('static/public/graph1.png')
         if save: 
@@ -107,15 +110,16 @@ def analytics():
         bars = plt.bar(sumdict.keys(), sumdict.values())
         plt.xlabel('Age')
         plt.ylabel('Total Number of People')
-        plt.title('Total Number of People per Age')
+        plt.title('Total Number of People per Age',fontsize=16)
         plt.tight_layout()
-        for bar in bars:
-            height = bar.get_height()
-            plt.annotate('{}'.format(height),
-                        xy=(bar.get_x() + bar.get_width() / 2, height),
-                        xytext=(0, 3),  # 3 points vertical offset
-                        textcoords="offset points",
-                        ha='center', va='bottom')
+        if len(sumdict) < 14:
+            for bar in bars:
+                height = bar.get_height()
+                plt.annotate('{}'.format(height),
+                            xy=(bar.get_x() + bar.get_width() / 2, height),
+                            xytext=(0, 3),  # 3 points vertical offset
+                            textcoords="offset points",
+                            ha='center', va='bottom')
         plt.savefig('static/public/graph2.png')
         if save:
             snapshotdata.at[snapshots[0],"form"] = form
@@ -126,15 +130,15 @@ def analytics():
             snapshots.append(snapshots[0])
 
         ###SEX PIE CHART###
-        sex_age_counts = df.groupby('sex')[age_columns].sum()
+        sex_age_counts = df[df['sex'] != 'persons'].groupby('sex')[age_columns].sum()
 
         # Calculate the total number of people per sex
         total_people_per_sex = sex_age_counts.sum(axis=1)
 
         # Plotting
         plt.figure(figsize=(10, 6))
-        plt.pie(total_people_per_sex, labels=total_people_per_sex.index, autopct='%1.1f%%', startangle=140, textprops={'fontsize': 30})
-        plt.title('Sex Distribution', fontsize=60)
+        plt.pie(total_people_per_sex, labels=total_people_per_sex.index, autopct='%1.1f%%', startangle=140, textprops={'fontsize': 16})
+        plt.title('Sex Distribution', fontsize=16)
         plt.axis('equal')
         plt.tight_layout()
         plt.savefig('static/public/graph3.png')
@@ -148,26 +152,57 @@ def analytics():
 
         # Plotting
         plt.figure(figsize=(10, 6))
-        plt.pie(total_people_per_location, labels=labels, autopct='%1.1f%%', startangle=140, textprops={'fontsize': 30})
-        plt.title('ITL Distribution',fontsize=60)
+        plt.pie(total_people_per_location, labels=labels, autopct='%1.1f%%', startangle=140, textprops={'fontsize': 16})
+        plt.title('ITL Distribution',fontsize=16)
         plt.axis('equal')
         plt.tight_layout()
         plt.savefig('static/public/graph4.png')
 
-        ###MONTH PIE CHART###
-        month_counts = df['month'].value_counts()
+        ###LOCATION BAR CHART###
+        location_age_counts = df.groupby('LAD')[age_columns].sum()
+
+        # Calculate the total number of people per sex
+        total_people_per_location = location_age_counts.sum(axis=1)
+        labels = [ '\n'.join(wrap(l, 15)) for l in total_people_per_location.index ] 
+
         # Plotting
         plt.figure(figsize=(10, 6))
-        plt.pie(month_counts, labels=month_counts.index, autopct='%1.1f%%', startangle=140,textprops={'fontsize': 25})
-        plt.title('Month Ratio',fontsize=60)
-        plt.axis('equal')
+        bars = plt.bar(labels, total_people_per_location, color='skyblue')
+        plt.xlabel('Location', fontsize=14)
+        plt.ylabel('Total People', fontsize=14)
+        plt.title('LAD Distribution', fontsize=16)
+        plt.xticks(rotation=45, ha='right', fontsize=12)
+        plt.yticks(fontsize=12)
         plt.tight_layout()
+
+        # Adding numbers at the top of the bars
+        if len(total_people_per_location) < 14:
+            for bar in bars:
+                height = bar.get_height()
+                plt.text(bar.get_x() + bar.get_width() / 2, height, '%d' % int(height), ha='center', va='bottom')
+
         plt.savefig('static/public/graph5.png')
+
+        # Call trends_box function and plot bar chart for top increases
+        trends_data = trends_box(trendsex, trenddate,'lad') # Adjust the selected_layer parameter accordingly
+        df_trends = pd.DataFrame(trends_data, columns=['lad', 'change'])
+
+        plt.figure(figsize=(10, 6))
+        bars = plt.bar(df_trends['lad'], df_trends['change'], color='skyblue')
+        plt.xlabel('Geographic Area')
+        plt.ylabel('Percentage Change')
+        plt.title('Top Increases in the last year')
+        plt.xticks(rotation=45, ha='right')
+        plt.tight_layout()
+        for bar in bars:
+            height = bar.get_height()
+            plt.text(bar.get_x() + bar.get_width() / 2, height, height, ha='center', va='bottom')
+        plt.savefig('static/public/graph6.png')
 
         search.append(form)
 
-        if save: snapshotdata.to_csv('static\snapshot\snapshotdata.csv',index=False)
-    return render_template('analytics-page.html',DataToRender = search )
+        if save: snapshotdata.to_csv('static/snapshot/snapshotdata.csv',index=False)
+    return render_template('analytics-page.html', DataToRender=search)
 
 @app.route('/snapshot')
 #@token_required
