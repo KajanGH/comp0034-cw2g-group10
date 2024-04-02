@@ -123,4 +123,19 @@ body {
     justify-content: space-between;
     align-items: flex-end;
     gap:5vh;
-}
+  }
+
+  
+  .submit-button {
+      background-color: var(--color-teal); /* Customize as needed */
+      color: white; /* Customize as needed */
+      border: none;
+      padding: 8px 16px;
+      border-radius: 4px;
+      cursor: pointer;
+      margin-left: 10px; /* Adjust spacing as needed */
+  }
+  
+  .submit-button:hover {
+      background-color: var(--color-cadetblue); /* Customize hover color */
+  }

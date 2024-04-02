@@ -24,8 +24,14 @@ lad_data = pd.read_csv('Datasets/Edited_Forecasts/combined_forecast_LAD_sex_age_
 #-----------------------------------------
 
 
-@app.route('/')
+@app.route('/',methods=["GET","POST"])
 def index():
+    df = pd.read_csv("dataset/users.csv")
+    if "email" in request.form.keys():
+        if request.form['email'] not in df['email'].values:
+            return render_template('sign-up-page.html'), 200
+        else:
+            return render_template('log-in-page.html'), 200
     return render_template('index.html')
 
 @app.route('/account')
