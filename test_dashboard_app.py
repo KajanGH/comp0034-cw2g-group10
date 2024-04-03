@@ -1,4 +1,6 @@
 import pytest
+import pandas as pd
+import os
 from selenium import webdriver
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
@@ -7,13 +9,37 @@ from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.common.keys import Keys
 from selenium.common.exceptions import TimeoutException
 from selenium.webdriver.support.ui import Select  # Import Select class
+import datetime
 
 @pytest.fixture
 def browser():
     driver = webdriver.Chrome()
     yield driver
     driver.quit()
+def populate_search_form(browser):
+    region_input = browser.find_element(By.ID, "Region")
+    region_input.send_keys("London")
 
+    low_age_input = browser.find_element(By.ID, "low-age")
+    low_age_input.send_keys("20")
+
+    high_age_input = browser.find_element(By.ID, "high-age")
+    high_age_input.send_keys("40")
+
+    year_input = browser.find_element(By.ID, "year")
+    year_input.send_keys("2022")
+
+    month_input = browser.find_element(By.ID, "month")
+    month_input.send_keys("January")
+
+    sex_input = browser.find_element(By.ID, "sex")
+    sex_input.send_keys("Male")
+
+    # Submit the form
+    submit_button = browser.find_element(By.CSS_SELECTOR, "button[type='submit']")
+    submit_button.click()
+
+####MAP PAGE TESTS#########
 def test_png_image(browser):
     # Open the website
     browser.get("http://127.0.0.1:5000/") 
@@ -162,4 +188,180 @@ def test_missing_required_fields(browser):
     # If an alert is present, it's an unexpected behavior
     assert False, "Unexpected behavior: Alert for missing required fields not found"
 
+####ANALYTICS/SNAPSHOT PAGE TESTS####
+def test_logo_navigation(browser):
+    # Open the website
+    browser.get("http://127.0.0.1:5000/analytics")
 
+    # Click on the logo
+    logo = browser.find_element(By.ID, "logoImage")
+    logo.click()
+
+    # Check if the URL redirects to the home page
+    assert browser.current_url == "http://127.0.0.1:5000/"
+
+def test_table_icon_navigation(browser):
+    # Open the website
+    browser.get("http://127.0.0.1:5000/analytics")
+
+    # Click on the table icon
+    table_icon = browser.find_element(By.ID, "tableIcon")
+    table_icon.click()
+
+    # Check if the URL redirects to the analytics page
+    assert browser.current_url == "http://127.0.0.1:5000/analytics"
+
+def test_camera_icon_navigation(browser):
+    # Open the website
+    browser.get("http://127.0.0.1:5000/analytics")
+
+    # Click on the camera icon
+    camera_icon = browser.find_element(By.ID, "cameraICon")
+    camera_icon.click()
+
+    # Check if the URL redirects to the snapshot page
+    assert browser.current_url == "http://127.0.0.1:5000/snapshot"
+
+def test_user_icon_navigation(browser):
+    # Open the website
+    browser.get(f"http://127.0.0.1:5000/analytics")
+
+    # Click on the user icon
+    user_icon = browser.find_element(By.ID, "userIcon")
+    user_icon.click()
+
+    # Check if the URL redirects to the account page
+    assert browser.current_url == f"http://127.0.0.1:5000/account"
+
+def test_settings_icon_navigation(browser):
+    # Open the website
+    browser.get(f"http://127.0.0.1:5000/analytics")
+
+    # Click on the settings icon
+    settings_icon = browser.find_element(By.ID, "settingsIcon")
+    settings_icon.click()
+
+    # Check if the URL redirects to the settings page
+    assert browser.current_url == f"http://127.0.0.1:5000/settings"
+
+def test_search_form_submission(browser):
+    # Open the website
+    browser.get("http://127.0.0.1:5000/analytics")
+
+    # Capture the initial timestamps of the graph image files
+    initial_timestamps = []
+    initial_graph_elements = browser.find_elements(By.CLASS_NAME, "img")
+    for graph_element in initial_graph_elements:
+        graph_src = graph_element.get_attribute("src")
+        # Extract the relative path of the image file
+        graph_file_path = "/".join(graph_src.split("/")[-3:])
+        # Get the timestamp of the image file
+        initial_timestamps.append(os.path.getmtime(graph_file_path))
+
+    populate_search_form(browser)
+
+
+    # Capture the updated timestamps of the graph image files
+    updated_timestamps = []
+    updated_graph_elements = browser.find_elements(By.CLASS_NAME, "img")
+    for graph_element in updated_graph_elements:
+        graph_src = graph_element.get_attribute("src")
+        # Extract the relative path of the image file
+        graph_file_path = "/".join(graph_src.split("/")[-3:])
+        # Get the timestamp of the image file
+        updated_timestamps.append(os.path.getmtime(graph_file_path))
+
+    # Check if the timestamps have changed after form submission
+    assert initial_timestamps != updated_timestamps
+
+
+def test_form_submission_changes_recent_search(browser):
+    # Open the website
+    browser.get("http://127.0.0.1:5000/analytics")
+
+    populate_search_form(browser)
+
+    # Wait for the page to reload and fetch the element with class "camden-female-30-41"
+    WebDriverWait(browser, 10).until(EC.visibility_of_element_located((By.CSS_SELECTOR, ".camden-female-30-41")))
+    data_to_render_element = browser.find_element(By.CSS_SELECTOR, ".camden-female-30-41")
+    new_data_to_render = data_to_render_element.text
+
+    # Check if the new top search matches the expected value
+    expected_value = "> London Male 20-40 in January 2022"
+    assert new_data_to_render == expected_value
+
+
+def test_heart_button_visibility(browser):
+    # Delete image sources to simulate no images being displayed
+    for i in range(1, 7):
+        if os.path.exists(f'static\\public\\graph{i}.png'): os.remove(f'static\\public\\graph{i}.png')
+
+    # Open the website
+    browser.get("http://127.0.0.1:5000/analytics")
+
+
+    # Check if heart buttons are visible when images are not displayed
+    heart_buttons = browser.find_elements(By.CLASS_NAME, "heart-button")
+    for button in heart_buttons:
+        assert not button.is_displayed()
+
+    populate_search_form(browser)
+
+
+    # Check if heart buttons become visible after form submission
+    heart_buttons = browser.find_elements(By.CLASS_NAME, "heart-button") #List remade to avoid stale element reference
+    for button in heart_buttons:
+        assert button.is_displayed()
+
+def test_enlarge_graph_and_close(browser):
+    # Open the website
+    browser.get("http://127.0.0.1:5000/analytics")
+
+    populate_search_form(browser)
+
+    # Click on one of the graphs to enlarge it
+    graph_to_enlarge = browser.find_element(By.CLASS_NAME, "img")
+    graph_to_enlarge.click()
+
+    # Wait for the close button to become visible
+    close_button = WebDriverWait(browser, 10).until(EC.visibility_of_element_located((By.CLASS_NAME, "close")))
+    # Click on the close button
+    close_button.click()
+
+    # Verify that the overlay is closed
+    overlay = browser.find_element(By.ID, "overlay")
+    assert not overlay.is_displayed()
+
+def test_heart_button_click(browser):
+    # Empty existing snapshot data
+    for i in range(0, 10):
+        if os.path.exists(f'static\\snapshot\\graph{i}.png'):
+            os.remove(f'static\\snapshot\\graph{i}.png')
+
+    # Empty existing snapshot data CSV
+    df = pd.DataFrame(columns=['date','form','img'])
+    df.to_csv('static\\snapshot\\snapshotdata.csv', index=False)
+
+    # Open the website
+    browser.get("http://127.0.0.1:5000/analytics")
+    
+    populate_search_form(browser)
+
+    # Wait for the heart buttons to become visible
+    WebDriverWait(browser, 10).until(EC.visibility_of_any_elements_located((By.CLASS_NAME, "heart-button")))
+
+    # Click on the heart button of the first graph
+    heart_button = browser.find_element(By.NAME, "heart_button_1")
+    heart_button.click()
+
+    # Check if the snapshot folder contains any PNG files
+    snapshot_files = [file for file in os.listdir('static\\snapshot') if file.endswith(".png")]
+    
+    assert snapshot_files, "No snapshot image files found in the snapshot folder"
+    
+    # Check if today's date and form data have been written to the CSV file
+    today_date = datetime.date.today().strftime("%Y-%m-%d")
+    expected_data = f"{today_date},London Male 20-40 in January 2022"
+    with open('static\\snapshot\\snapshotdata.csv', 'r') as file:
+        csv_data = file.read()
+        assert expected_data in csv_data, f"Expected data '{expected_data}' not found in the CSV file"
