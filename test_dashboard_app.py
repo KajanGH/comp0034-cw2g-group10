@@ -71,7 +71,6 @@ def test_submit_data(browser):
     )
     browser.execute_script("arguments[0].setAttribute('value', '24291')", year_input)
 
-    browser.execute_script("document.body.style.zoom='80%'")
     # Submit the form
     submit_button = WebDriverWait(browser, 10).until(
     EC.element_to_be_clickable((By.CLASS_NAME, "log-in-container"))
