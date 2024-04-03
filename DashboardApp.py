@@ -14,7 +14,7 @@ import sys
 import os
 
 app = Flask(__name__)
-app.secret_key = secrets.token_hex(16)
+app.secret_key = "eyJ1IjoiZ3JlZW55NzMiLCJhIjoiY2szNXFhY3B4MWVoeTNobzJ0cjBrenl1biJ9"
 
 
 #PUT LOCATION CSV HERE--------------
@@ -36,7 +36,7 @@ def index():
     return render_template('index.html')
 
 @app.route('/account')
-@token_required
+#@token_required
 def account():
     return render_template('account-page.html')
 
@@ -216,10 +216,6 @@ def snapshot():
     snapshotdata = pd.read_csv('static\snapshot\snapshotdata.csv')
     return render_template('snapshot-page.html',dates = snapshotdata['date'].values, info = snapshotdata['form'].values, imgs=snapshotdata['img'].values)
 
-@app.route('/dashboard')
-@token_required
-def dashboard():
-    return render_template('dashboard-page.html')
 
 @app.route('/log-in', methods = ['GET','POST'])
 def login():
@@ -235,7 +231,7 @@ def login():
     return render_template('log-in-page.html'),200
 
 @app.route('/settings')
-@token_required
+#@token_required
 def settings():
     return render_template('settings-page.html')
 
