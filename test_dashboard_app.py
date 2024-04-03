@@ -298,7 +298,7 @@ def test_heart_button_visibility(browser):
 
     # Open the website
     browser.get("http://127.0.0.1:5000/analytics")
-
+    browser.maximize_window()
 
     # Check if heart buttons are visible when images are not displayed
     heart_buttons = browser.find_elements(By.CLASS_NAME, "heart-button")
@@ -307,7 +307,7 @@ def test_heart_button_visibility(browser):
 
     populate_search_form(browser)
 
-
+    WebDriverWait(browser, 10).until(EC.visibility_of_any_elements_located((By.CLASS_NAME, "heart-button")))
     # Check if heart buttons become visible after form submission
     heart_buttons = browser.find_elements(By.CLASS_NAME, "heart-button") #List remade to avoid stale element reference
     for button in heart_buttons:
@@ -316,7 +316,7 @@ def test_heart_button_visibility(browser):
 def test_enlarge_graph_and_close(browser):
     # Open the website
     browser.get("http://127.0.0.1:5000/analytics")
-
+    
     populate_search_form(browser)
 
     # Click on one of the graphs to enlarge it
@@ -332,6 +332,7 @@ def test_enlarge_graph_and_close(browser):
     overlay = browser.find_element(By.ID, "overlay")
     assert not overlay.is_displayed()
 
+####SNAPSHOT PAGE TESTS####
 def test_heart_button_click(browser):
     # Empty existing snapshot data
     for i in range(0, 10):
@@ -344,6 +345,7 @@ def test_heart_button_click(browser):
 
     # Open the website
     browser.get("http://127.0.0.1:5000/analytics")
+    browser.maximize_window()
     
     populate_search_form(browser)
 
@@ -365,3 +367,70 @@ def test_heart_button_click(browser):
     with open('static\\snapshot\\snapshotdata.csv', 'r') as file:
         csv_data = file.read()
         assert expected_data in csv_data, f"Expected data '{expected_data}' not found in the CSV file"
+
+def test_logo_click_navigation(browser):
+    browser.get("http://127.0.0.1:5000/snapshot")
+    logo_icon = browser.find_element(By.CLASS_NAME, "logo-icon9")
+    logo_icon.click()
+    assert browser.current_url == "http://127.0.0.1:5000/"
+
+def test_world_icon_click_navigation(browser):
+    browser.get("http://127.0.0.1:5000/snapshot") 
+    world_icon = browser.find_element(By.ID, "worldIcon")
+    world_icon.click()
+    assert browser.current_url == "http://127.0.0.1:5000/map"
+
+def test_table_icon_click_navigation(browser):
+    browser.get("http://127.0.0.1:5000/snapshot")
+    table_icon = browser.find_element(By.ID, "tableIcon")
+    table_icon.click()
+    assert browser.current_url == "http://127.0.0.1:5000/analytics"
+
+def test_camera_icon_click_navigation(browser):
+    browser.get("http://127.0.0.1:5000/snapshot") 
+    camera_icon = browser.find_element(By.CLASS_NAME, "camera-icon9")
+    camera_icon.click()
+    assert browser.current_url == "http://127.0.0.1:5000/snapshot"
+
+def test_user_icon_click_navigation(browser):
+    browser.get("http://127.0.0.1:5000/snapshot") 
+    user_icon = browser.find_element(By.ID, "userIcon")
+    user_icon.click()
+    assert browser.current_url == "http://127.0.0.1:5000/account"
+
+def test_settings_icon_click_navigation(browser):
+    browser.get("http://127.0.0.1:5000/snapshot") 
+    settings_icon = browser.find_element(By.ID, "settingsIcon")
+    settings_icon.click()
+    assert browser.current_url == "http://127.0.0.1:5000/settings"
+
+def test_image_click_overlay(browser):
+    browser.get("http://127.0.0.1:5000/snapshot")
+    images = browser.find_elements(By.CLASS_NAME, "saved-image")
+    overlay = browser.find_element(By.ID, "overlay")
+    overlay_img = browser.find_element(By.ID, "overlayImg")
+    for image in images: # Check all images
+        image.click()
+        assert overlay.is_displayed()
+        assert overlay_img.get_attribute("src") == image.get_attribute("src")
+        close_btn = browser.find_element(By.CLASS_NAME, "close")
+        close_btn.click()
+        assert not overlay.is_displayed()
+
+def test_check_image_links(browser):
+    browser.get("http://127.0.0.1:5000/snapshot")
+    images = browser.find_elements(By.CLASS_NAME, "saved-image")
+    for image in images:
+        assert image.get_attribute("src") != ""
+
+def test_check_additional_info_display(browser):
+    browser.get("http://127.0.0.1:5000/snapshot")
+    additional_infos = browser.find_elements(By.CLASS_NAME, "additional-info")
+    for info in additional_infos:
+        assert info.text != ""
+
+def test_verify_date_display(browser):
+    browser.get("http://127.0.0.1:5000/snapshot")
+    date_saved = browser.find_elements(By.CLASS_NAME, "date-saved")
+    for date in date_saved:
+        assert date.text != ""
