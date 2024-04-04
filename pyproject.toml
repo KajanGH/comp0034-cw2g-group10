@@ -1,0 +1,77 @@
+[project]
+name = "DashboardApp"
+version = "1"
+description = "dashboard app"
+dependencies = [
+    "attrs",
+    "blinker",
+    "certifi",
+    "cffi",
+    "click",
+    "colorama",
+    "contourpy",
+    "cycler",
+    "et-xmlfile",
+    "exceptiongroup",
+    "Flask",
+    "fonttools",
+    "h11",
+    "idna",
+    "iniconfig",
+    "itsdangerous",
+    "Jinja2",
+    "kiwisolver",
+    "MarkupSafe",
+    "matplotlib",
+    "numpy",
+    "openpyxl",
+    "outcome",
+    "packaging",
+    "pandas",
+    "pathlib",
+    "pillow",
+    "pip",
+    "pluggy",
+    "pycparser",
+    "PyJWT",
+    "pyparsing",
+    "PySocks",
+    "pytest",
+    "python-dateutil",
+    "pytz",
+    "selenium",
+    "setuptools",
+    "six",
+    "sniffio",
+    "sortedcontainers",
+    "tomli",
+    "trio",
+    "trio-websocket",
+    "typing_extensions",
+    "tzdata",
+    "urllib3",
+    "Werkzeug",
+    "wsproto"
+
+]
+
+# https://setuptools.pypa.io/en/latest/userguide/pyproject_config.html
+[build-system]
+requires = ["setuptools", "setuptools-scm"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+where = ["."]  # list of folders that contain the packages (["."] by default)
+namespaces = false  # to disable scanning PEP 420 namespaces (true by default)
+
+[tool.flask]
+debug = true
+
+[tool.poetry.dev-dependencies]
+pytest = "^6.0"
+
+[tool.poetry.scripts]
+test = "pytest"
+
+[tool.pytest]
+testpaths = "."
