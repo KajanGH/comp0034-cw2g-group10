@@ -36,14 +36,14 @@ def index():
     return render_template('index.html')
 
 @app.route('/account')
-#@token_required
+@token_required
 def account():
     return render_template('account-page.html')
 
 search = deque(["","",""],maxlen=3)
 snapshots = deque([0,1,2,3,4,5,6,7,8],maxlen=9)
 @app.route('/analytics', methods=['GET', 'POST'])
-#@token_required
+@token_required
 def analytics():
     snapshotdata = pd.read_csv('static/snapshot/snapshotdata.csv')
     trenddate = False
@@ -211,7 +211,7 @@ def analytics():
     return render_template('analytics-page.html', DataToRender=search)
 
 @app.route('/snapshot')
-#@token_required
+@token_required
 def snapshot():
     snapshotdata = pd.read_csv('static\snapshot\snapshotdata.csv')
     return render_template('snapshot-page.html',dates = snapshotdata['date'].values, info = snapshotdata['form'].values, imgs=snapshotdata['img'].values)
@@ -231,7 +231,7 @@ def login():
     return render_template('log-in-page.html'),200
 
 @app.route('/settings')
-#@token_required
+@token_required
 def settings():
     return render_template('settings-page.html')
 
@@ -252,7 +252,7 @@ def signup():
     return render_template('sign-up-page.html'), 200
 
 @app.route('/map', methods=['GET', 'POST'])
-#@token_required
+@token_required
 def map():
     # Perform data analysis and calculations
     start_age = 0
