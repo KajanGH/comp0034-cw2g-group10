@@ -38,9 +38,9 @@ def decode_auth_token(auth_token):
         return make_response({'message': "Invalid token. Please log in again."}, 401)
 
 
-def get_user(id):
+def get_user(id,users):
     """Get user details from CSV."""
-    df = pd.read_csv(USERS_FILE)
+    df = pd.read_csv(users)
     if id in df['id'].values:
         return df[df['id'] == id].to_dict('records')[0]
     return None
@@ -56,7 +56,7 @@ def token_required(f):
         token_payload = decode_auth_token(token)
         try: id = token_payload["sub"]
         except TypeError: return render_template('log-in-page.html', error = "Authentication Token expired, please log in again")
-        user = get_user(id)
+        user = get_user(id,USERS_FILE)
         if not user: return render_template('log-in-page.html',error="Invalid or missing user id, please log in again")
 
         return f(*args, **kwargs)
