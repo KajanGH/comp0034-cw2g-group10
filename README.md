@@ -26,6 +26,8 @@ Analytics page: Use filters and get graphs and data about desired demographic. F
 
 Snapshot page: Gallery of all favourited graphs, along with timestamps and filter specifics
 
-Account page
+Account page: Unused but there as proof of concept
 
-Settings page
+Settings page: Unused but there as proof of concept
+
+GITHUB REPO LINK: https://github.com/ucl-comp0035/comp0034-cw2g-group10
