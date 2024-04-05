@@ -45,7 +45,17 @@ body {
   font-size: 20px; /* Font size */
   font-family: var(--font-rubik); /* Use the Rubik font */
 }
-
+.instructions {
+  position: fixed;
+  bottom: 20px;
+  right: 10px;
+  background-color: rgba(0, 0, 0, 0.6);
+  color: white;
+  padding: 10px;
+  font-size: 20px;
+  border-radius: 5px;
+  z-index: 9999;
+}
 /* Fade-out animation */
 @keyframes fadeOut {
   0% {
