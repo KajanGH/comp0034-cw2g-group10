@@ -31,3 +31,5 @@ Account page: Unused but there as proof of concept
 Settings page: Unused but there as proof of concept
 
 GITHUB REPO LINK: https://github.com/ucl-comp0035/comp0034-cw2g-group10
+
+For references and supporting evidence please see supporting-document.pdf
