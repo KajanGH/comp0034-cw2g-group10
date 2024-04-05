@@ -67,6 +67,12 @@ namespaces = false  # to disable scanning PEP 420 namespaces (true by default)
 [tool.flask]
 debug = true
 
+[tool.poetry]
+name = "DashboardApp"
+version = "1"
+description = "dashboard app"
+python = "^3.9.0"
+
 [tool.poetry.dev-dependencies]
 pytest = "^6.0"
 
