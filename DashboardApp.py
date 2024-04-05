@@ -18,10 +18,10 @@ app.secret_key = "eyJ1IjoiZ3JlZW55NzMiLCJhIjoiY2szNXFhY3B4MWVoeTNobzJ0cjBrenl1bi
 
 
 #PUT LOCATION CSV HERE--------------
-ctry_data = pd.read_csv('Datasets/Edited_Forecasts/combined_forecast_ctry_sex_age_group.csv')
-rgn_data = pd.read_csv('Datasets/Edited_Forecasts/combined_forecast_Region_sex_age_group.csv')
-itl_data = pd.read_csv('Datasets/Edited_Forecasts/combined_forecast_ITL_sex_age_group.csv')
-lad_data = pd.read_csv('Datasets/Edited_Forecasts/combined_forecast_LAD_sex_age_group.csv')
+ctry_data = pd.read_csv('Forecasting Data/Edited_Forecasts/combined_forecast_ctry_sex_age_group.csv')
+rgn_data = pd.read_csv('Forecasting Data/Edited_Forecasts/combined_forecast_Region_sex_age_group.csv')
+itl_data = pd.read_csv('Forecasting Data/Edited_Forecasts/combined_forecast_ITL_sex_age_group.csv')
+lad_data = pd.read_csv('Forecasting Data/Edited_Forecasts/combined_forecast_LAD_sex_age_group.csv')
 #-----------------------------------------
 
 

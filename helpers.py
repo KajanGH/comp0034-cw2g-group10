@@ -68,13 +68,13 @@ def trends_box(sexChoice, formatted_date, selected_layer):
 
     if selected_layer == 'rgn':
         geocolumn = "Region"
-        data = pd.read_csv('Datasets/Edited_Forecasts/combined_forecast_Region_sex_age_group.csv')
+        data = pd.read_csv('Forecasting Data/Edited_Forecasts/combined_forecast_Region_sex_age_group.csv')
     elif selected_layer == 'lad':
         geocolumn = "LAD"
-        data = pd.read_csv('Datasets/Edited_Forecasts/combined_forecast_LAD_sex_age_group.csv')
+        data = pd.read_csv('Forecasting Data/Edited_Forecasts/combined_forecast_LAD_sex_age_group.csv')
     elif selected_layer == 'itl':
         geocolumn = "ITL"
-        data = pd.read_csv('Datasets/Edited_Forecasts/combined_forecast_ITL_sex_age_group.csv')
+        data = pd.read_csv('Forecasting Data/Edited_Forecasts/combined_forecast_ITL_sex_age_group.csv')
 
     # First year:
     fdata = data[data['sex'] == sexChoice]
